@@ -1,0 +1,13 @@
+.related-products{
+    padding:80px 20px;
+}
+
+.related-products .products-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
+}
+
+.related-products h2{
+    margin-bottom:40px;
+}

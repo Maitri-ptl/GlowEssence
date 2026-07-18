@@ -8,6 +8,8 @@ import Register from "../pages/auth/Register";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import ResetPassword from "../pages/auth/ResetPassword";
 import Profile from "../pages/profile/Profile";
+import ProductDetails from "../pages/product/ProductDetails";
+
 
 const AppRoutes = () => {
   return (
@@ -18,6 +20,7 @@ const AppRoutes = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
 
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<Profile />} />

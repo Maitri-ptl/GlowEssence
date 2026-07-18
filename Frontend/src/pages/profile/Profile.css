@@ -1,0 +1,263 @@
+.ge-profile-page {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.ge-profile-header {
+  margin-bottom: 2rem;
+}
+
+.ge-profile-header h1 {
+  font-size: 2.1rem;
+  margin-bottom: 0.3rem;
+}
+
+.ge-profile-header p {
+  color: var(--ge-text-muted);
+  font-size: 0.92rem;
+}
+
+.ge-profile-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.ge-profile-sidebar {
+  padding: 2rem 1.5rem;
+  text-align: center;
+  position: sticky;
+  top: 90px;
+}
+
+.ge-profile-avatar {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  background: linear-gradient(135deg, var(--ge-blush) 0%, var(--ge-gold-soft) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ge-font-heading);
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--ge-white);
+}
+
+.ge-profile-sidebar h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.ge-profile-sidebar .ge-profile-email {
+  font-size: 0.82rem;
+  color: var(--ge-text-muted);
+  margin-bottom: 1.6rem;
+  word-break: break-all;
+}
+
+.ge-profile-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.ge-profile-nav button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ge-text-muted);
+  cursor: pointer;
+  transition: background var(--ge-transition), color var(--ge-transition);
+}
+
+.ge-profile-nav button:hover {
+  background: var(--ge-blush-soft);
+  color: var(--ge-charcoal);
+}
+
+.ge-profile-nav button.active {
+  background: var(--ge-blush-soft);
+  color: var(--ge-gold);
+}
+
+.ge-profile-nav button.logout {
+  margin-top: 0.6rem;
+  border-top: 1px solid #f0e6df;
+  padding-top: 1rem;
+  border-radius: 0;
+  color: #c1594f;
+}
+
+.ge-profile-content {
+  padding: 2.2rem;
+}
+
+.ge-profile-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.7rem;
+}
+
+.ge-profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem 1.4rem;
+}
+
+.ge-profile-grid .ge-form-group.full {
+  grid-column: 1 / -1;
+}
+
+.ge-profile-save {
+  margin-top: 1.8rem;
+  display: flex;
+  gap: 0.9rem;
+}
+
+.ge-order-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f0e6df;
+  flex-wrap: wrap;
+}
+
+.ge-order-item:last-child {
+  border-bottom: none;
+}
+
+.ge-order-thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  background: var(--ge-blush-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ge-gold);
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.ge-order-info {
+  flex: 1;
+  min-width: 160px;
+}
+
+.ge-order-info .ge-order-title {
+  font-weight: 500;
+  font-size: 0.92rem;
+}
+
+.ge-order-info .ge-order-date {
+  font-size: 0.8rem;
+  color: var(--ge-text-muted);
+}
+
+.ge-order-status {
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.ge-order-status.delivered {
+  background: #e7f0e0;
+  color: #5c8347;
+}
+
+.ge-order-status.shipped {
+  background: #fbeedd;
+  color: var(--ge-gold);
+}
+
+.ge-order-status.processing {
+  background: #eee6f5;
+  color: #7a5fa8;
+}
+
+.ge-order-total {
+  font-weight: 600;
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
+.ge-address-card {
+  border: 1px solid #f0e6df;
+  border-radius: 12px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.ge-address-card .ge-address-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--ge-gold);
+  background: var(--ge-blush-soft);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  margin-bottom: 0.6rem;
+}
+
+.ge-address-card p {
+  font-size: 0.88rem;
+  color: var(--ge-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.ge-address-actions {
+  margin-top: 0.9rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.ge-address-actions button {
+  background: none;
+  border: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--ge-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.ge-address-actions button:hover {
+  color: var(--ge-gold);
+}
+
+@media (max-width: 900px) {
+  .ge-profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ge-profile-sidebar {
+    position: static;
+  }
+
+  .ge-profile-grid {
+    grid-template-columns: 1fr;
+  }
+}

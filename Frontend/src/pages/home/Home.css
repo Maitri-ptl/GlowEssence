@@ -1,0 +1,73 @@
+.ge-hero {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem;
+  min-height: 60vh;
+}
+
+.ge-hero-text {
+  flex: 1;
+}
+
+.ge-hero-text .ge-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.8rem;
+  color: var(--ge-gold);
+  font-weight: 600;
+}
+
+.ge-hero-text h1 {
+  font-size: 3.2rem;
+  line-height: 1.15;
+  margin: 1rem 0 1.3rem;
+}
+
+.ge-hero-text p {
+  color: var(--ge-text-muted);
+  font-size: 1.02rem;
+  max-width: 460px;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.ge-hero-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.ge-hero-image {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ge-hero-image img {
+  max-width: 100%;
+  border-radius: 24px;
+}
+
+@media (max-width: 900px) {
+  .ge-hero {
+    flex-direction: column;
+    text-align: center;
+    padding-top: 2.5rem;
+  }
+
+  .ge-hero-text p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .ge-hero-actions {
+    justify-content: center;
+  }
+
+  .ge-hero-text h1 {
+    font-size: 2.3rem;
+  }
+}

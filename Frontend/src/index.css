@@ -1,0 +1,143 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap");
+
+:root {
+  --ge-cream: #fdf8f4;
+  --ge-cream-deep: #f7ede4;
+  --ge-blush: #f3d9d4;
+  --ge-blush-soft: #f9e9e6;
+  --ge-rose: #cd9a94;
+  --ge-gold: #b8935f;
+  --ge-gold-soft: #d8c19a;
+  --ge-charcoal: #3a3230;
+  --ge-text-muted: #8a7d78;
+  --ge-white: #ffffff;
+
+  --ge-font-heading: "Cormorant Garamond", serif;
+  --ge-font-body: "Jost", sans-serif;
+
+  --ge-radius: 14px;
+  --ge-shadow: 0 10px 30px rgba(58, 50, 48, 0.08);
+  --ge-transition: 0.25s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--ge-font-body);
+  color: var(--ge-charcoal);
+  background-color: var(--ge-cream);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+.ge-serif {
+  font-family: var(--ge-font-heading);
+  font-weight: 600;
+  color: var(--ge-charcoal);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: var(--ge-font-body);
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.ge-btn-gold {
+  background: linear-gradient(135deg, var(--ge-gold) 0%, var(--ge-gold-soft) 100%);
+  border: none;
+  color: var(--ge-white);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  border-radius: 999px;
+  padding: 0.7rem 2rem;
+  transition: transform var(--ge-transition), box-shadow var(--ge-transition), opacity var(--ge-transition);
+  box-shadow: 0 8px 20px rgba(184, 147, 95, 0.35);
+}
+
+.ge-btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(184, 147, 95, 0.45);
+  color: var(--ge-white);
+}
+
+.ge-btn-gold:active {
+  transform: translateY(0);
+}
+
+.ge-btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--ge-charcoal);
+  color: var(--ge-charcoal);
+  font-weight: 500;
+  border-radius: 999px;
+  padding: 0.65rem 1.9rem;
+  transition: background var(--ge-transition), color var(--ge-transition);
+}
+
+.ge-btn-outline:hover {
+  background: var(--ge-charcoal);
+  color: var(--ge-white);
+}
+
+.ge-form-control {
+  width: 100%;
+  border: 1px solid #e7dcd4;
+  background: var(--ge-white);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-family: var(--ge-font-body);
+  font-size: 0.95rem;
+  color: var(--ge-charcoal);
+  transition: border-color var(--ge-transition), box-shadow var(--ge-transition);
+}
+
+.ge-form-control:focus {
+  outline: none;
+  border-color: var(--ge-gold);
+  box-shadow: 0 0 0 3px rgba(184, 147, 95, 0.15);
+}
+
+.ge-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ge-text-muted);
+  margin-bottom: 0.4rem;
+  display: inline-block;
+}
+
+.ge-card {
+  background: var(--ge-white);
+  border-radius: var(--ge-radius);
+  box-shadow: var(--ge-shadow);
+}
+
+.ge-link-gold {
+  color: var(--ge-gold);
+  font-weight: 500;
+  transition: opacity var(--ge-transition);
+}
+
+.ge-link-gold:hover {
+  opacity: 0.75;
+  color: var(--ge-gold);
+}

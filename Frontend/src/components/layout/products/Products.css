@@ -1,0 +1,91 @@
+.ge-products{
+padding:30px 0;
+}
+
+.ge-section-heading span{
+text-transform: uppercase;
+letter-spacing: 0.2em;
+font-size: 0.8rem;
+color: var(--ge-gold);
+font-weight: 600;
+}
+
+.ge-section-heading{
+text-align: center;
+padding: 50px 0;
+color: #b8935f;
+}
+
+.ge-section-heading h2{
+font-size: 3.2rem;
+}
+
+.ge-controls{
+display:flex;
+justify-content:space-between;
+gap:70px;
+margin-bottom:40px;
+flex-wrap:wrap;
+}
+
+.ge-controls input{
+flex:2;
+padding:14px;
+border:1px solid #ddd;
+border-radius:10px;
+outline:none;
+}
+
+.ge-controls select{
+flex:1;
+padding:14px;
+border:1px solid #ddd;
+border-radius:10px;
+background:white;
+cursor:pointer;
+}
+
+.ge-controls input:focus,
+.ge-controls select:focus{
+border-color:var(--ge-gold);
+}
+
+.products-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+gap:50px;
+}
+
+.pagination{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:10px;
+margin-top:40px;
+}
+
+.pagination button{
+border:none;
+padding:10px 18px;
+border-radius:8px;
+cursor:pointer;
+background:#f2e8df;
+color:#333;
+font-weight:600;
+transition:.3s;
+}
+
+.pagination button:hover{
+background:#b8935f;
+color:#fff;
+}
+
+.pagination button.active{
+background:#b8935f;
+color:#fff;
+}
+
+.pagination button:disabled{
+opacity:.5;
+cursor:not-allowed;
+}

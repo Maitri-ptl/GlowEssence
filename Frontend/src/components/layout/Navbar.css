@@ -1,0 +1,165 @@
+.ge-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(253, 248, 244, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(184, 147, 95, 0.15);
+}
+
+.ge-navbar-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.9rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.ge-navbar-brand {
+  font-family: var(--ge-font-heading);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--ge-charcoal);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.ge-navbar-brand span {
+  color: var(--ge-gold);
+}
+
+.ge-navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 2.2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ge-navbar-links a {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ge-charcoal);
+  position: relative;
+  padding: 0.3rem 0;
+  transition: color var(--ge-transition);
+}
+
+.ge-navbar-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 1.5px;
+  background: var(--ge-gold);
+  transition: width var(--ge-transition);
+}
+
+.ge-navbar-links a:hover {
+  color: var(--ge-gold);
+}
+
+.ge-navbar-links a:hover::after {
+  width: 100%;
+}
+
+.ge-navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.ge-icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--ge-charcoal);
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  transition: background var(--ge-transition), color var(--ge-transition);
+}
+
+.ge-icon-btn:hover {
+  background: var(--ge-blush-soft);
+  color: var(--ge-gold);
+}
+
+.ge-cart-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: var(--ge-gold);
+  color: var(--ge-white);
+  font-size: 0.62rem;
+  font-weight: 600;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2px;
+}
+
+.ge-navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--ge-charcoal);
+  cursor: pointer;
+}
+
+.ge-navbar-mobile-menu {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .ge-navbar-links {
+    position: fixed;
+    top: 68px;
+    left: 0;
+    right: 0;
+    background: var(--ge-cream);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--ge-transition);
+    border-bottom: 1px solid rgba(184, 147, 95, 0.15);
+  }
+
+  .ge-navbar-links.open {
+    max-height: 400px;
+    padding: 0.5rem 0 1rem;
+  }
+
+  .ge-navbar-links li {
+    width: 100%;
+  }
+
+  .ge-navbar-links a {
+    display: block;
+    padding: 0.85rem 1.5rem;
+  }
+
+  .ge-navbar-links a::after {
+    display: none;
+  }
+
+  .ge-navbar-toggle {
+    display: inline-flex;
+  }
+}

@@ -21,6 +21,7 @@ const ORDER_ITEMS = [
     image:
       "https://m.media-amazon.com/images/I/71RjwtQtYSL._AC_UF1000,1000_QL80_.jpg",
   },
+  
 ];
 
 const INITIAL_FORM = {

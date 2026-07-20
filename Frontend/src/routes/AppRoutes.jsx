@@ -9,6 +9,10 @@ import ForgotPassword from "../pages/auth/ForgotPassword";
 import ResetPassword from "../pages/auth/ResetPassword";
 import Profile from "../pages/profile/Profile";
 import ProductDetails from "../pages/product/ProductDetails";
+import Cart from "../pages/cart/Cart";
+import Shipping from "../pages/checkout/Shipping";
+import Payment from "../pages/checkout/Payment";
+import Wishlist from "../pages/wishlist/Wishlist";
 
 const AppRoutes = () => {
   return (
@@ -20,6 +24,10 @@ const AppRoutes = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout/shipping" element={<Shipping />} />
+        <Route path="/checkout/payment" element={<Payment />} />
+        <Route path="/wishlist" element={<Wishlist />} />
 
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<Profile />} />

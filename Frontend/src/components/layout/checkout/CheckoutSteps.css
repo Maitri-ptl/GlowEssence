@@ -1,0 +1,41 @@
+.ge-checkout-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding-bottom: 1.8rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #ece1d7;
+}
+
+.ge-checkout-step {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #cdc1b7;
+  transition: color var(--ge-transition);
+}
+
+.ge-checkout-step.is-done {
+  color: var(--ge-text-muted);
+}
+
+.ge-checkout-step.is-active {
+  color: var(--ge-gold);
+}
+
+.ge-checkout-step-sep {
+  color: #d9cdc2;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 560px) {
+  .ge-checkout-step {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+  }
+}

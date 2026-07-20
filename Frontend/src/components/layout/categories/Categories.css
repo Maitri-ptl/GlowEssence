@@ -4,7 +4,7 @@
   padding: 5rem 1.5rem;
 }
 
-.ge-categories span{
+.ge-categories span {
   text-transform: uppercase;
   letter-spacing: 0.2em;
   font-size: 0.8rem;
@@ -20,7 +20,7 @@
 
 .ge-categories-heading h2 {
   font-size: 3.2rem;
-  margin: .7rem 0; 
+  margin: .7rem 0;
 }
 
 .ge-categories-heading p {
@@ -33,7 +33,7 @@
 
 .ge-categories-grid {
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
 }
 
@@ -60,46 +60,59 @@
   position: absolute;
   inset: 0;
 
-  background: linear-gradient(
-      to top,
-      rgba(0,0,0,.7),
-      rgba(0,0,0,.2)
-  );
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, .7),
+      rgba(0, 0, 0, .2));
 
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-  padding:2rem;
-  color:white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  color: white;
 }
 
-.ge-category-overlay h3{
-font-size:1.8rem;
-margin-bottom:.4rem;
+.ge-category-overlay h3 {
+  font-size: 1.8rem;
+  margin-bottom: .4rem;
+  color: #f3f3f3;
 }
 
-.ge-category-overlay p{
-margin-bottom:1.2rem;
-color:#f3f3f3;
+.ge-category-overlay p {
+  margin-bottom: 1.2rem;
+  color: #f3f3f3;
 }
 
-.ge-category-overlay button{
-width:140px;
+.ge-category-overlay button {
+  width: 140px;
+  color: var(--ge-gold);
+}
+.ge-category-overlay .ge-btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--ge-gold);
+  font-weight: 500;
+  border-radius: 999px;
+  padding: 0.65rem 1.9rem;
+  transition: background var(--ge-transition), color var(--ge-transition);
 }
 
-
-@media(max-width:900px){
-
-.ge-categories-grid{
-grid-template-columns:repeat(2,1fr);
+.ge-category-overlay .ge-btn-outline:hover {
+  background: var(--ge-charcoal);
+  color: var(--ge-white);
+  border: 1.5px solid var(--ge-charcoal);
 }
 
+@media(max-width:900px) {
+
+  .ge-categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
 }
 
-@media(max-width:600px){
+@media(max-width:600px) {
 
-.ge-categories-grid{
-grid-template-columns:1fr;
-}
+  .ge-categories-grid {
+    grid-template-columns: 1fr;
+  }
 
 }

@@ -32,12 +32,12 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="ge-hero-image">
+        {/* <div className="ge-hero-image">
           <img
             src={hero}
             alt="GlowEssence hero product"
           />
-        </div>
+        </div> */}
       </section>
 
       {/* Categories Section */}

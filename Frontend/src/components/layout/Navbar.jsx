@@ -5,8 +5,6 @@ import "./Navbar.css";
 const NAV_LINKS = [
   { label: "Home", to: "/" },
   { label: "Shop", to: "/" },
-  { label: "Skincare", to: "/" },
-  { label: "Makeup", to: "/" },
   { label: "About", to: "/" },
 ];
 
@@ -39,10 +37,13 @@ const Navbar = () => {
           <Link to="/profile" className="ge-icon-btn" aria-label="Account">
             <i className="bi bi-person"></i>
           </Link>
-          <button className="ge-icon-btn" aria-label="Cart">
+          <Link to="/wishlist" className="ge-icon-btn" aria-label="Wishlist">
+            <i className="bi bi-heart"></i>
+          </Link>
+          <Link to="/cart" className="ge-icon-btn" aria-label="Cart">
             <i className="bi bi-bag"></i>
             <span className="ge-cart-badge">0</span>
-          </button>
+          </Link>
           <button
             className="ge-navbar-toggle"
             aria-label="Toggle menu"

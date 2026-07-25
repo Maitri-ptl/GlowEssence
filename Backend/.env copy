@@ -1,0 +1,7 @@
+PORT = 3000
+MONGODB_URL = mongodb://localhost:27017/glowessence
+JWT_SECRET = '12345'
+EMAIL_USER = 'kanjanibhumi27@gmail.com'
+EMAIL_PASS = 'grfk cmlm vtwl kpgm'
+RAZORPAY_KEY_ID = rzp_test_TG5Qebnu6hquLI
+RAZORPAY_KEY_SECRET = I5e8ZScHpzbKbx3pfRjtch4T

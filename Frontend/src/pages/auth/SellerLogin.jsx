@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../features/users/userSlicer";
+import { loginSeller } from "../../features/sellers/sellerSlicer";
 import "./Auth.css";
 
-const Login = () => {
+const SellerLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, error } = useSelector((state) => state.users);
+  const { isLoading, error } = useSelector((state) => state.seller);
 
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -17,7 +17,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      await dispatch(loginUser({ email, password })).unwrap();
+      await dispatch(loginSeller({ email, password })).unwrap();
       navigate("/");
     } catch (err) {
       // error message is already saved in redux state, nothing else to do
@@ -28,20 +28,20 @@ const Login = () => {
     <div className="ge-auth-page">
       <div className="ge-auth-visual">
         <div className="ge-auth-visual-content">
-          <span className="ge-eyebrow">Welcome Back</span>
-          <h2>Your glow routine missed you.</h2>
+          <span className="ge-eyebrow">Seller Login</span>
+          <h2>Manage your store, your way.</h2>
           <p>
-            Sign in to track orders, save your favorite products, and get
-            early access to new beauty drops.
+            Sign in to your business account to manage your products and
+            orders.
           </p>
         </div>
       </div>
 
       <div className="ge-auth-form-side">
         <div className="ge-auth-card">
-          <h1 className="ge-auth-title">Sign In</h1>
+          <h1 className="ge-auth-title">Seller Sign In</h1>
           <p className="ge-auth-subtitle">
-            Enter your details to access your GlowEssence account.
+            Enter your business account details to continue.
           </p>
 
           {error && (
@@ -50,11 +50,11 @@ const Login = () => {
 
           <form onSubmit={handleSubmit}>
             <div className="ge-form-group">
-              <label className="ge-label" htmlFor="login-email">
+              <label className="ge-label" htmlFor="seller-login-email">
                 Email Address
               </label>
               <input
-                id="login-email"
+                id="seller-login-email"
                 type="email"
                 className="ge-form-control"
                 placeholder="you@example.com"
@@ -65,12 +65,12 @@ const Login = () => {
             </div>
 
             <div className="ge-form-group">
-              <label className="ge-label" htmlFor="login-password">
+              <label className="ge-label" htmlFor="seller-login-password">
                 Password
               </label>
               <div className="ge-password-field">
                 <input
-                  id="login-password"
+                  id="seller-login-password"
                   type={showPassword ? "text" : "password"}
                   className="ge-form-control"
                   placeholder="Enter your password"
@@ -89,16 +89,6 @@ const Login = () => {
               </div>
             </div>
 
-            <div className="ge-form-row-between">
-              <label className="ge-checkbox-label">
-                <input type="checkbox" />
-                Remember me
-              </label>
-              <Link to="/forgot-password" className="ge-link-gold">
-                Forgot password?
-              </Link>
-            </div>
-
             <div className="ge-auth-submit">
               <button
                 type="submit"
@@ -112,15 +102,15 @@ const Login = () => {
           </form>
 
           <p className="ge-auth-footer-text">
-            Don't have an account?{" "}
-            <Link to="/register" className="ge-link-gold">
+            Don't have a business account?{" "}
+            <Link to="/seller/register" className="ge-link-gold">
               Create one
             </Link>
           </p>
 
           <p className="ge-auth-footer-text">
-            Are you a seller?{" "}
-            <Link to="/seller/login" className="ge-link-gold">
+            Are you a shopper?{" "}
+            <Link to="/login" className="ge-link-gold">
               Sign in here
             </Link>
           </p>
@@ -130,4 +120,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SellerLogin;

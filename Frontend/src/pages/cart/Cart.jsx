@@ -1,29 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import CheckoutSteps from "../../components/layout/checkout/CheckoutSteps";
+import {
+  fetchCart,
+  updateCartItem,
+  removeCartItem,
+} from "../../features/cart/cartSlicer";
 import "./Cart.css";
 
-const CART_ITEMS = [
-  {
-    id: 1,
-    name: "Vitamin C Face Serum",
-    variant: "30 ml",
-    price: "₹ 899",
-    qty: 1,
-    image: "https://proskire.in/cdn/shop/files/Untitled-3.jpg?v=1770361489",
-  },
-  {
-    id: 2,
-    name: "Aloe Vera Face Wash",
-    variant: "150 ml",
-    price: "₹ 549",
-    qty: 1,
-    image:
-      "https://m.media-amazon.com/images/I/71RjwtQtYSL._AC_UF1000,1000_QL80_.jpg",
-  },
-];
-
 const Cart = () => {
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.users);
+  const { items, isLoading, error } = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(fetchCart());
+    }
+  }, [dispatch, currentUser]);
+
+  const subtotal = items.reduce(
+    (sum, item) => sum + item.product.price * item.quantity,
+    0
+  );
+
+  const handleIncrease = (item) => {
+    dispatch(updateCartItem({ id: item._id, quantity: item.quantity + 1 }));
+  };
+
+  const handleDecrease = (item) => {
+    if (item.quantity > 1) {
+      dispatch(updateCartItem({ id: item._id, quantity: item.quantity - 1 }));
+    }
+  };
+
+  const handleRemove = (item) => {
+    dispatch(removeCartItem(item._id));
+  };
+
   return (
     <section className="ge-checkout-page">
       <div className="ge-checkout-card">
@@ -33,41 +48,75 @@ const Cart = () => {
           <div className="ge-cart-main">
             <h1 className="ge-checkout-title">Shopping Cart</h1>
 
-            <ul className="ge-cart-list">
-              {CART_ITEMS.map((item) => (
-                <li className="ge-cart-item" key={item.id}>
-                  <div className="ge-cart-item-media">
-                    <img src={item.image} alt={item.name} />
-                  </div>
+            {!currentUser && (
+              <p>
+                Please{" "}
+                <Link to="/login" className="ge-link-gold">
+                  sign in
+                </Link>{" "}
+                to view your cart.
+              </p>
+            )}
 
-                  <div className="ge-cart-item-details">
-                    <div className="ge-cart-item-top">
-                      <div>
-                        <h3>{item.name}</h3>
-                        <span className="ge-cart-item-variant">
-                          {item.variant}
+            {currentUser && isLoading && <p>Loading your cart...</p>}
+
+            {currentUser && error && <p className="ge-cart-error">{error}</p>}
+
+            {currentUser && !isLoading && !error && items.length === 0 && (
+              <p>Your cart is empty.</p>
+            )}
+
+            {currentUser && !isLoading && items.length > 0 && (
+              <ul className="ge-cart-list">
+                {items.map((item) => (
+                  <li className="ge-cart-item" key={item._id}>
+                    <div className="ge-cart-item-media">
+                      <img src={item.product.image} alt={item.product.name} />
+                    </div>
+
+                    <div className="ge-cart-item-details">
+                      <div className="ge-cart-item-top">
+                        <div>
+                          <h3>{item.product.name}</h3>
+                        </div>
+
+                        <button
+                          type="button"
+                          className="ge-cart-remove"
+                          onClick={() => handleRemove(item)}
+                        >
+                          Remove
+                        </button>
+                      </div>
+
+                      <div className="ge-cart-item-bottom">
+                        <div className="ge-qty-select">
+                          <button
+                            type="button"
+                            aria-label="Decrease quantity"
+                            onClick={() => handleDecrease(item)}
+                          >
+                            -
+                          </button>
+                          <span>{item.quantity}</span>
+                          <button
+                            type="button"
+                            aria-label="Increase quantity"
+                            onClick={() => handleIncrease(item)}
+                          >
+                            +
+                          </button>
+                        </div>
+
+                        <span className="ge-cart-item-price">
+                          ₹ {item.product.price * item.quantity}
                         </span>
                       </div>
-
-                      <button type="button" className="ge-cart-remove">
-                        Remove
-                      </button>
                     </div>
-
-                    <div className="ge-cart-item-bottom">
-                      <div className="ge-qty-select">
-                        <span>Quantity {item.qty}</span>
-                        <i className="bi bi-chevron-down"></i>
-                      </div>
-
-                      <span className="ge-cart-item-price">
-                        {item.price}
-                      </span>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <aside className="ge-order-summary">
@@ -75,7 +124,7 @@ const Cart = () => {
 
             <div className="ge-order-row">
               <span>Subtotal</span>
-              <span>₹ 1,448</span>
+              <span>₹ {subtotal}</span>
             </div>
 
             <div className="ge-order-row">
@@ -87,7 +136,7 @@ const Cart = () => {
 
             <div className="ge-order-row ge-order-total">
               <span>Total</span>
-              <span>₹ 1,448</span>
+              <span>₹ {subtotal}</span>
             </div>
 
             <div className="ge-discount">

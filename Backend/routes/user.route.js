@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteUser, getAllUser, login, profile, register, updateUser } from "../controllers/user.controller.js";
+import { deleteUser, getAllUser, login, profile, register, updateUser, verifyEmail } from "../controllers/user.controller.js";
 import { validation } from "../middlewares/validation.js";
 import { verifyAdmin, verifytoken, verifyUser } from "../middlewares/auth.middleware.js";
 
@@ -8,6 +8,10 @@ const userRouter = Router();
 // register user route
 // api/user/register
 userRouter.post("/register", validation, register);
+
+// Verify Email Route
+// api/user/verify-email/:token
+userRouter.get("/verify-email/:token", verifyEmail);
 
 //login user route
 //api/user/login

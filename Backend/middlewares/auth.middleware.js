@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import Product from "../models/product.model.js";
 
 export const verifytoken = (req, res, next) => {
     try {
@@ -47,4 +48,50 @@ export const verifyAdmin = (req, res, next) => {
     }
 
     return res.status(400).json({ success: false, message: "Admin access only" })
+}
+
+// only logged in sellers can pass (used before create/update/delete product routes)
+export const verifySeller = (req, res, next) => {
+    if (req.user.role == 'seller') {
+        return next();
+    }
+
+    return res.status(400).json({ success: false, message: "Seller access only" })
+}
+
+// allows a seller to access only their own /profile/:id or /update/:id etc.
+export const verifySellerSelf = (req, res, next) => {
+    const { id } = req.params;
+
+    if (req.user.id == id) {
+        return next();
+    }
+
+    return res.status(400).json({ success: false, message: "Unauthorized" })
+}
+
+// makes sure a seller can only update/delete a PRODUCT that belongs to them
+// admin is always allowed through
+export const verifyProductOwner = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        const product = await Product.findById(id);
+
+        if (!product) {
+            return res.status(400).json({ success: false, message: "Product not found" });
+        }
+
+        if (req.user.role == 'admin') {
+            return next();
+        }
+
+        if (req.user.role == 'seller' && product.seller.toString() == req.user.id) {
+            return next();
+        }
+
+        return res.status(403).json({ success: false, message: "You can only manage your own products" });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
 }

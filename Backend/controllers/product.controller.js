@@ -14,19 +14,135 @@ export const createProduct = async (req, res) => {
     }
 }
 
-// get all products
+// Get All Products
+// Search + Filter + Sort + Pagination
+
 export const getAllproducts = async (req, res) => {
     try {
 
-        const product = await Product.find().populate('category').populate('brand').populate('seller', '-password')
+        const { search, category, brand, minPrice, maxPrice, sort, page = 1, limit = 10 } = req.query
 
-        if (!product) {
-            return res.status(400).json({ message: "Add product" })
+        const filter = {}
+
+        if (search) {
+
+            filter.$or = [
+
+                // Product name me search karega
+                {
+                    name: {
+                        $regex: search,
+                        $options: "i" // i = case insensitive
+                    }
+                },
+
+                // Description me bhi search karega
+                {
+                    description: {
+                        $regex: search,
+                        $options: "i"
+                    }
+                }
+
+            ]
         }
 
-        return res.status(200).json({ success: true, product })
+        if (category) {
+            filter.category = category
+        }
+
+        if (brand) {
+            filter.brand = brand
+        }
+
+        if (minPrice || maxPrice) {
+
+            filter.price = {}
+
+            if (minPrice) {
+                filter.price.$gte = Number(minPrice)
+            }
+
+            if (maxPrice) {
+                filter.price.$lte = Number(maxPrice)
+            }
+
+        }
+
+        let sortOption = {}
+
+        switch (sort) {
+
+            case "priceAsc":
+                sortOption.price = 1
+                break
+
+            case "priceDesc":
+                sortOption.price = -1
+                break
+
+            case "newest":
+                sortOption.createdAt = -1
+                break
+
+            case "oldest":
+                sortOption.createdAt = 1
+                break
+
+            case "nameAsc":
+                sortOption.name = 1
+                break
+
+            case "nameDesc":
+                sortOption.name = -1
+                break
+
+            default:
+                sortOption.createdAt = -1
+
+        }
+
+        const skip = (page - 1) * limit
+
+        const totalProducts = await Product.countDocuments(filter)
+
+        const products = await Product.find(filter)
+
+            .populate("category")
+
+            .populate("brand")
+
+            .populate("seller", "-password")
+
+            .sort(sortOption)
+
+            .skip(skip)
+
+            .limit(Number(limit))
+
+        return res.status(200).json({
+
+            success: true,
+
+            totalProducts,
+
+            currentPage: Number(page),
+
+            totalPages: Math.ceil(totalProducts / limit),
+
+            products
+
+        })
+
     } catch (error) {
-        return res.status(500).json({ success: false, message: error.message })
+
+        return res.status(500).json({
+
+            success: false,
+
+            message: error.message
+
+        })
 
     }
 }
@@ -74,7 +190,7 @@ export const deleteProduct = async (req, res) => {
             return res.status(400).json({ message: "Product not Found" })
         }
 
-        return res.status(200).json({message: "Product Deleted", success: true, product })
+        return res.status(200).json({ message: "Product Deleted", success: true, product })
 
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message })

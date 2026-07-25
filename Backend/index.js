@@ -3,6 +3,7 @@ import "dotenv/config";
 import db from "./configs/db.js";
 import bodyParser from "body-parser";
 import router from "./routes/index.js";
+import razorpay from "./configs/razorpay.js";
 
 const port = process.env.PORT || 3000;
 

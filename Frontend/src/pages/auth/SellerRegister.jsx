@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../features/users/userSlicer";
+import { registerSeller } from "../../features/sellers/sellerSlicer";
 import "./Auth.css";
 
-const Register = () => {
+const SellerRegister = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, message } = useSelector((state) => state.users);
+  const { isLoading, error, message } = useSelector((state) => state.seller);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const [name, setName] = useState("");
+  const [businessName, setBusinessName] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [gstin, setGstin] = useState("");
+  const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agreeTerms, setAgreeTerms] = useState(false);
@@ -28,31 +32,41 @@ const Register = () => {
     }
 
     if (!agreeTerms) {
-      setFormError("Please agree to the Terms & Privacy Policy.");
+      setFormError("Please agree to the Terms & Seller Policy.");
       return;
     }
 
-    dispatch(registerUser({ name, email, password }));
+    dispatch(
+      registerSeller({
+        name,
+        businessName,
+        email,
+        phoneNumber,
+        gstin,
+        address,
+        password,
+      })
+    );
   };
 
   return (
     <div className="ge-auth-page">
       <div className="ge-auth-visual">
         <div className="ge-auth-visual-content">
-          <span className="ge-eyebrow">Join GlowEssence</span>
-          <h2>Beauty rituals, made for you.</h2>
+          <span className="ge-eyebrow">Sell on GlowEssence</span>
+          <h2>Grow your beauty business with us.</h2>
           <p>
-            Create an account to unlock personalized recommendations, faster
-            checkout, and member-only rewards.
+            Create a business account to list your products and reach
+            thousands of beauty lovers.
           </p>
         </div>
       </div>
 
       <div className="ge-auth-form-side">
         <div className="ge-auth-card">
-          <h1 className="ge-auth-title">Create Account</h1>
+          <h1 className="ge-auth-title">Create Business Account</h1>
           <p className="ge-auth-subtitle">
-            Sign up in seconds and start your glow journey today.
+            Tell us about your business to start selling on GlowEssence.
           </p>
 
           {formError && (
@@ -67,11 +81,11 @@ const Register = () => {
 
           <form onSubmit={handleSubmit}>
             <div className="ge-form-group">
-              <label className="ge-label" htmlFor="reg-name">
-                Full Name
+              <label className="ge-label" htmlFor="seller-name">
+                Owner Full Name
               </label>
               <input
-                id="reg-name"
+                id="seller-name"
                 type="text"
                 className="ge-form-control"
                 placeholder="Jane Doe"
@@ -82,11 +96,25 @@ const Register = () => {
             </div>
 
             <div className="ge-form-group">
-              <label className="ge-label" htmlFor="reg-email">
+              <label className="ge-label" htmlFor="seller-business-name">
+                Business Name
+              </label>
+              <input
+                id="seller-business-name"
+                type="text"
+                className="ge-form-control"
+                placeholder="Glow Beauty Store"
+                value={businessName}
+                onChange={(e) => setBusinessName(e.target.value)}
+              />
+            </div>
+
+            <div className="ge-form-group">
+              <label className="ge-label" htmlFor="seller-email">
                 Email Address
               </label>
               <input
-                id="reg-email"
+                id="seller-email"
                 type="email"
                 className="ge-form-control"
                 placeholder="you@example.com"
@@ -97,12 +125,57 @@ const Register = () => {
             </div>
 
             <div className="ge-form-group">
-              <label className="ge-label" htmlFor="reg-password">
+              <label className="ge-label" htmlFor="seller-phone">
+                Phone Number
+              </label>
+              <input
+                id="seller-phone"
+                type="tel"
+                className="ge-form-control"
+                placeholder="9876543210"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="ge-form-group">
+              <label className="ge-label" htmlFor="seller-gstin">
+                GSTIN
+              </label>
+              <input
+                id="seller-gstin"
+                type="text"
+                className="ge-form-control"
+                placeholder="22AAAAA0000A1Z5"
+                value={gstin}
+                onChange={(e) => setGstin(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="ge-form-group">
+              <label className="ge-label" htmlFor="seller-address">
+                Business Address
+              </label>
+              <textarea
+                id="seller-address"
+                rows="2"
+                className="ge-form-control"
+                placeholder="Shop no, street, city, state, pincode"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+              ></textarea>
+            </div>
+
+            <div className="ge-form-group">
+              <label className="ge-label" htmlFor="seller-password">
                 Password
               </label>
               <div className="ge-password-field">
                 <input
-                  id="reg-password"
+                  id="seller-password"
                   type={showPassword ? "text" : "password"}
                   className="ge-form-control"
                   placeholder="Create a password"
@@ -122,12 +195,12 @@ const Register = () => {
             </div>
 
             <div className="ge-form-group">
-              <label className="ge-label" htmlFor="reg-confirm">
+              <label className="ge-label" htmlFor="seller-confirm">
                 Confirm Password
               </label>
               <div className="ge-password-field">
                 <input
-                  id="reg-confirm"
+                  id="seller-confirm"
                   type={showConfirm ? "text" : "password"}
                   className="ge-form-control"
                   placeholder="Re-enter your password"
@@ -154,7 +227,7 @@ const Register = () => {
                   onChange={(e) => setAgreeTerms(e.target.checked)}
                 />
                 I agree to the <Link to="/" className="ge-link-gold">Terms</Link> &amp;{" "}
-                <Link to="/" className="ge-link-gold">Privacy Policy</Link>
+                <Link to="/" className="ge-link-gold">Seller Policy</Link>
               </label>
             </div>
 
@@ -165,19 +238,22 @@ const Register = () => {
                 style={{ width: "100%" }}
                 disabled={isLoading}
               >
-                {isLoading ? "Creating Account..." : "Create Account"}
+                {isLoading ? "Creating Account..." : "Create Business Account"}
               </button>
             </div>
           </form>
 
           <p className="ge-auth-footer-text">
-            Already have an account?{" "}
-            <Link to="/login" className="ge-link-gold">
+            Want a shopper account instead?{" "}
+            <Link to="/register" className="ge-link-gold">
+              Sign up here
+            </Link>
+          </p>
+
+          <p className="ge-auth-footer-text">
+            Already have a business account?{" "}
+            <Link to="/seller/login" className="ge-link-gold">
               Sign in
-            </Link>{" "}
-            · Are you a seller?{" "}
-            <Link to="/seller/register" className="ge-link-gold">
-              Create business account
             </Link>
           </p>
         </div>
@@ -186,4 +262,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default SellerRegister;

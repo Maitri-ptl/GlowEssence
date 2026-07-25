@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const BASE_URL = "/api/user";
+const BASE_URL = "/api/seller";
 
-// Register a new user
-export const registerUser = createAsyncThunk(
-    "user/registerUser",
+// Register a new seller (business account)
+export const registerSeller = createAsyncThunk(
+    "seller/registerSeller",
     async (formData, { rejectWithValue }) => {
         try {
             const res = await fetch(`${BASE_URL}/register`, {
@@ -28,9 +28,9 @@ export const registerUser = createAsyncThunk(
     }
 );
 
-// Login user
-export const loginUser = createAsyncThunk(
-    "user/loginUser",
+// Login seller
+export const loginSeller = createAsyncThunk(
+    "seller/loginSeller",
     async (formData, { rejectWithValue }) => {
         try {
             const res = await fetch(`${BASE_URL}/login`, {
@@ -52,27 +52,26 @@ export const loginUser = createAsyncThunk(
     }
 );
 
-const storedUser = localStorage.getItem("geUser");
-const storedToken = localStorage.getItem("geToken");
+const storedSeller = localStorage.getItem("geSeller");
+const storedSellerToken = localStorage.getItem("geSellerToken");
 
-const user = createSlice({
-    name: "user",
+const seller = createSlice({
+    name: "seller",
     initialState: {
-        users: [],
-        currentUser: storedUser ? JSON.parse(storedUser) : null,
-        token: storedToken || null,
+        currentSeller: storedSeller ? JSON.parse(storedSeller) : null,
+        token: storedSellerToken || null,
         isLoading: false,
         error: null,
         message: null,
     },
     reducers: {
-        logoutUser: (state) => {
-            state.currentUser = null;
+        logoutSeller: (state) => {
+            state.currentSeller = null;
             state.token = null;
-            localStorage.removeItem("geUser");
-            localStorage.removeItem("geToken");
+            localStorage.removeItem("geSeller");
+            localStorage.removeItem("geSellerToken");
         },
-        clearUserStatus: (state) => {
+        clearSellerStatus: (state) => {
             state.error = null;
             state.message = null;
         },
@@ -80,41 +79,41 @@ const user = createSlice({
     extraReducers: (builder) => {
         builder
             // Register
-            .addCase(registerUser.pending, (state) => {
+            .addCase(registerSeller.pending, (state) => {
                 state.isLoading = true;
                 state.error = null;
                 state.message = null;
             })
-            .addCase(registerUser.fulfilled, (state, action) => {
+            .addCase(registerSeller.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.message = action.payload.message;
             })
-            .addCase(registerUser.rejected, (state, action) => {
+            .addCase(registerSeller.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
             })
             // Login
-            .addCase(loginUser.pending, (state) => {
+            .addCase(loginSeller.pending, (state) => {
                 state.isLoading = true;
                 state.error = null;
                 state.message = null;
             })
-            .addCase(loginUser.fulfilled, (state, action) => {
+            .addCase(loginSeller.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.currentUser = {
-                    id: action.payload.userId,
+                state.currentSeller = {
+                    id: action.payload.sellerId,
                     name: action.payload.name,
                 };
                 state.token = action.payload.token;
-                localStorage.setItem("geUser", JSON.stringify(state.currentUser));
-                localStorage.setItem("geToken", action.payload.token);
+                localStorage.setItem("geSeller", JSON.stringify(state.currentSeller));
+                localStorage.setItem("geSellerToken", action.payload.token);
             })
-            .addCase(loginUser.rejected, (state, action) => {
+            .addCase(loginSeller.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
             });
     },
 });
 
-export const { logoutUser, clearUserStatus } = user.actions;
-export const userReducer = user.reducer;
+export const { logoutSeller, clearSellerStatus } = seller.actions;
+export const sellerReducer = seller.reducer;

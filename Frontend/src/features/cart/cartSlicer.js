@@ -1,0 +1,124 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+const BASE_URL = "/api/cart";
+
+const authHeaders = (token) => ({
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+});
+
+// Get logged in user's cart
+export const fetchCart = createAsyncThunk(
+    "cart/fetchCart",
+    async (_, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().users.token;
+
+            const res = await fetch(`${BASE_URL}/get-cart`, {
+                headers: authHeaders(token),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return rejectWithValue(data.message || "Failed to load cart");
+            }
+
+            return data.cart;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+// Update quantity of a cart item
+export const updateCartItem = createAsyncThunk(
+    "cart/updateCartItem",
+    async ({ id, quantity }, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().users.token;
+
+            const res = await fetch(`${BASE_URL}/update/${id}`, {
+                method: "PATCH",
+                headers: authHeaders(token),
+                body: JSON.stringify({ quantity }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return rejectWithValue(data.message || "Failed to update quantity");
+            }
+
+            return data.cart;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+// Remove a product from the cart
+export const removeCartItem = createAsyncThunk(
+    "cart/removeCartItem",
+    async (id, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().users.token;
+
+            const res = await fetch(`${BASE_URL}/remove/${id}`, {
+                method: "DELETE",
+                headers: authHeaders(token),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return rejectWithValue(data.message || "Failed to remove item");
+            }
+
+            return id;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+const cart = createSlice({
+    name: "cart",
+    initialState: {
+        items: [],
+        isLoading: false,
+        error: null,
+    },
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchCart.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(fetchCart.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.items = action.payload;
+            })
+            .addCase(fetchCart.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
+            .addCase(updateCartItem.fulfilled, (state, action) => {
+                const updated = action.payload;
+                const index = state.items.findIndex(
+                    (item) => item._id === updated._id
+                );
+                if (index !== -1) {
+                    state.items[index].quantity = updated.quantity;
+                }
+            })
+            .addCase(removeCartItem.fulfilled, (state, action) => {
+                state.items = state.items.filter(
+                    (item) => item._id !== action.payload
+                );
+            });
+    },
+});
+
+export const cartReducer = cart.reducer;

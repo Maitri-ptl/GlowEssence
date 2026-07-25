@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema(
             minlength: 2,
             maxlength: 50,
         },
-
         email: {
             type: String,
             required: true,
@@ -17,19 +16,28 @@ const userSchema = new mongoose.Schema(
             trim: true,
             lowercase: true,
         },
-
         password: {
             type: String,
-            required: true,
-            minlength: 8,
-            select: false,
+            required: true
         },
-
         role: {
             type: String,
             enum: ["user", "admin"],
             default: "user",
         },
+        isVerified: {
+            type: Boolean,
+            default: false
+        },
+        // Verification token store hoga
+        verificationToken: {
+            type: String,
+            default: ""
+        },
+        // Token kab expire hoga
+        verificationTokenExpire: {
+            type: Date
+        }
     },
     {
         timestamps: true,

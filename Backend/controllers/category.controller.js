@@ -13,7 +13,7 @@ export const createCategory = async (req, res) => {
 }
 
 // get all category
-export const getallCategory = async  (req, res) => {
+export const getallCategory = async (req, res) => {
     try {
         const category = await Category.find()
 
@@ -29,7 +29,7 @@ export const getallCategory = async  (req, res) => {
 }
 
 // get category by id
-export const categorybyId = async  (req, res) => {
+export const categorybyId = async (req, res) => {
     try {
         const { id } = req.params
 
@@ -47,11 +47,11 @@ export const categorybyId = async  (req, res) => {
 }
 
 // update category
-export const updateCategory = async  (req, res) => {
+export const updateCategory = async (req, res) => {
     try {
         const { id } = req.params
 
-        const category = await Category.findByIdAndUpdate(id)
+        const category = await Category.findByIdAndUpdate(id, req.body, { new: true })
 
         if (!category) {
             return res.status(400).json({ message: "Category not found" })
@@ -65,7 +65,7 @@ export const updateCategory = async  (req, res) => {
 }
 
 // delete category
-export const deleteCategory = async  (req, res) => {
+export const deleteCategory = async (req, res) => {
     try {
         const { id } = req.params
 

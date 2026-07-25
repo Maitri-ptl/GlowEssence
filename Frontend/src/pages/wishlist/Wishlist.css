@@ -26,6 +26,11 @@
   flex-wrap: wrap;
 }
 
+.ge-wishlist-error {
+  color: #c0392b;
+  margin-bottom: 1rem;
+}
+
 .ge-wishlist-title {
   font-size: 1.9rem;
   margin: 0;

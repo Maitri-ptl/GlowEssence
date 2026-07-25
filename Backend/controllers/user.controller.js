@@ -2,39 +2,215 @@ import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
+// Random token generate karne ke liye
+import crypto from "crypto";
+// Email send karne ke liye
+import transporter from "../configs/nodemailer.js";
 
 // register user controller
 // api/user/register
+
 export const register = async (req, res) => {
+
     try {
+
+        // Validation Errors
         const error = validationResult(req);
 
         if (error.array().length > 0) {
-            return res.status(400).json(error.array())
+
+            return res.status(400).json(error.array());
+
         }
 
+        // Body se data lena
         const { name, email, password } = req.body;
 
+
+        // Required Fields Check
         if (!name || !email || !password) {
-            return res.status(400).json({ success: false, message: "All fields are required." });
+
+            return res.status(400).json({
+
+                success: false,
+
+                message: "All fields are required."
+
+            });
+
         }
 
+
+        // Check User Exists
         const userExist = await User.findOne({ email });
 
         if (userExist) {
-            return res.status(400).json({ success: false, message: "User already exist." });
+
+            return res.status(400).json({
+
+                success: false,
+
+                message: "User already exists."
+
+            });
+
         }
 
-        const salt = await bcrypt.genSalt(10)
+        const salt = await bcrypt.genSalt(10);
 
-        const hashPassword = await bcrypt.hash(password, salt)
+        const hashPassword = await bcrypt.hash(password, salt);
 
-        const user = await User.create({ ...req.body, password: hashPassword });
+        // Random 32 byte token banega
+        const verificationToken = crypto.randomBytes(32).toString("hex");
 
-        return res.status(200).json({ success: true, message: "Register successfully.", user })
-    } catch (error) {
-        return res.status(500).json({ success: false, message: error.message })
+
+        // Token 1 hour baad expire hoga
+        const verificationTokenExpire = Date.now() + 60 * 60 * 1000;
+
+        const user = await User.create({
+
+            name,
+
+            email,
+
+            password: hashPassword,
+
+            verificationToken,
+
+            verificationTokenExpire
+
+        });
+
+        // Frontend URL baad me change kar dena
+        const verificationURL =
+            `http://localhost:3000/api/user/verify-email/${verificationToken}`;
+
+        await transporter.sendMail({
+
+            from: process.env.EMAIL_USER,
+
+            to: user.email,
+
+            subject: "Verify Your Email",
+
+            html: `
+
+                <h2>Hello ${user.name}</h2>
+
+                <p>Click the button below to verify your email.</p>
+
+                <a href="${verificationURL}">
+
+                    <button
+                        style="
+                            padding:10px 20px;
+                            background:#4CAF50;
+                            color:white;
+                            border:none;
+                            cursor:pointer;
+                        ">
+                        Verify Email
+                    </button>
+
+                </a>
+
+                <p>This link will expire in 1 hour.</p>
+
+            `
+
+        });
+
+        return res.status(201).json({
+
+            success: true,
+
+            message: "Registration successful. Please check your email to verify your account."
+
+        });
+
     }
+
+    catch (error) {
+
+        return res.status(500).json({
+
+            success: false,
+
+            message: error.message
+
+        });
+
+    }
+
+};
+
+// Verify Email Controller
+// /api/user/verify-email/:token
+
+export const verifyEmail = async (req, res) => {
+
+    try {
+
+        // URL se token nikal rahe hain
+        const { token } = req.params;
+
+        // Token match hona chahiye
+        // Aur token expire bhi nahi hona chahiye
+
+        const user = await User.findOne({
+
+            verificationToken: token,
+
+            verificationTokenExpire: { $gt: Date.now() }
+
+        });
+
+
+        // Agar token galat hai ya expire ho gaya
+        if (!user) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message: "Invalid or Expired Verification Link."
+
+            });
+
+        }
+
+        user.isVerified = true;
+
+        // Token remove kar denge
+        user.verificationToken = "";
+
+        user.verificationTokenExpire = null;
+
+
+        await user.save();
+
+        return res.status(200).json({
+
+            success: true,
+
+            message: "Email Verified Successfully. You can now login."
+
+        });
+
+    }
+
+    catch (error) {
+
+        return res.status(500).json({
+
+            success: false,
+
+            message: error.message
+
+        });
+
+    }
+
 }
 
 // login user controller
@@ -63,6 +239,21 @@ export const login = async (req, res) => {
 
         if (!isValid) {
             return res.status(400).json({ success: false, message: "Password not match" });
+        }
+
+        // Agar email verify nahi hui hai
+        // To login allow nahi karenge
+
+        if (!user.isVerified) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message: "Please verify your email before login."
+
+            });
+
         }
 
         const payload = {

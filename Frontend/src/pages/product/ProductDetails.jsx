@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import products from "../../data/products";
 import RelatedProducts from "../../components/layout/products/RelatedProducts";
+import NotFound from "../error/NotFound";
 import "./ProductDetails.css";
 
 const ProductDetails = () => {
@@ -12,9 +13,10 @@ const ProductDetails = () => {
 
   if (!product) {
     return (
-      <h2 style={{ textAlign: "center", margin: "80px" }}>
-        Product Not Found
-      </h2>
+      <NotFound
+        title="Product Not Found"
+        text="Sorry, this product doesn't exist or is no longer available."
+      />
     );
   }
 

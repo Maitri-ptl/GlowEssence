@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCart } from "../../features/cart/cartSlicer";
 import "./Navbar.css";
 
 const NAV_LINKS = [
@@ -10,6 +12,17 @@ const NAV_LINKS = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.users);
+  const { items } = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(fetchCart());
+    }
+  }, [dispatch, currentUser]);
+
+  const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <header className="ge-navbar">
@@ -42,7 +55,7 @@ const Navbar = () => {
           </Link>
           <Link to="/cart" className="ge-icon-btn" aria-label="Cart">
             <i className="bi bi-bag"></i>
-            <span className="ge-cart-badge">0</span>
+            <span className="ge-cart-badge">{cartCount}</span>
           </Link>
           <button
             className="ge-navbar-toggle"

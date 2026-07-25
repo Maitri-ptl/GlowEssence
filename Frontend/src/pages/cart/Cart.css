@@ -108,17 +108,42 @@
 .ge-qty-select {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 0.9rem;
+  gap: 0.7rem;
+  padding: 0.35rem 0.7rem;
   border: 1px solid #e7dcd4;
   border-radius: 999px;
   font-size: 0.85rem;
   color: var(--ge-charcoal);
 }
 
+.ge-qty-select button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ge-charcoal);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+}
+
+.ge-qty-select button:hover {
+  color: var(--ge-gold);
+}
+
 .ge-cart-item-price {
   font-weight: 600;
   color: var(--ge-charcoal);
+}
+
+.ge-cart-error {
+  color: #c0392b;
+  margin-bottom: 1rem;
 }
 
 /* Order summary */

@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../../features/users/userSlicer";
 import "./Profile.css";
 
 const TABS = [
@@ -16,6 +19,13 @@ const ORDERS = [
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("info");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate("/");
+  };
 
   return (
     <div className="ge-profile-page">
@@ -42,7 +52,7 @@ const Profile = () => {
               </li>
             ))}
             <li>
-              <button className="logout">
+              <button className="logout" onClick={handleLogout}>
                 <i className="bi bi-box-arrow-right"></i> Log Out
               </button>
             </li>

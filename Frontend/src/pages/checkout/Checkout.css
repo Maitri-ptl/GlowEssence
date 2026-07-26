@@ -20,6 +20,30 @@
   margin: 0 0 1.6rem;
 }
 
+/* Payment success screen */
+.ge-order-success {
+  text-align: center;
+  padding: 3.5rem 2rem;
+}
+
+.ge-order-success-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: rgba(143, 174, 130, 0.15);
+  color: #4c7a3f;
+  font-size: 2rem;
+  margin-bottom: 1.2rem;
+}
+
+.ge-order-success p {
+  color: var(--ge-text-muted);
+  margin-bottom: 1.8rem;
+}
+
 .ge-checkout-subtitle {
   font-size: 1.3rem;
   margin: 2.2rem 0 1.4rem;

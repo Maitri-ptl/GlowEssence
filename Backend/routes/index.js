@@ -16,8 +16,11 @@ const router = Router();
 router.use('/user', userRouter);
 router.use('/admin', adminRouter);
 router.use('/seller', sellerRouter);
-router.use('/category', verifytoken, verifyAdmin, categoryRouter);
-router.use('/brand', verifytoken, verifyAdmin, brandRouter);
+// admin-only checks now live on the individual write routes inside
+// category.route.js / brand.route.js, so any logged-in user (including
+// sellers) can read the lists here
+router.use('/category', verifytoken, categoryRouter);
+router.use('/brand', verifytoken, brandRouter);
 router.use('/product', productRouter);
 router.use('/cart', verifytoken, cartRouter);
 router.use("/wishlist", verifytoken, wishlistRouter);

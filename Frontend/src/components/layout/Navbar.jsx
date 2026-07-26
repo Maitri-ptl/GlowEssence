@@ -6,15 +6,19 @@ import "./Navbar.css";
 
 const NAV_LINKS = [
   { label: "Home", to: "/" },
-  { label: "Shop", to: "/" },
-  { label: "About", to: "/" },
+  { label: "Shop", to: "/shop" },
+  { label: "About", to: "/about" },
 ];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.users);
+  const { currentSeller } = useSelector((state) => state.seller);
   const { items } = useSelector((state) => state.cart);
+
+  const isAdmin = currentUser?.role === "admin";
+  const isSeller = Boolean(currentSeller);
 
   useEffect(() => {
     if (currentUser) {
@@ -40,6 +44,22 @@ const Navbar = () => {
                 </Link>
               </li>
             ))}
+
+            {/* dashboard link changes depending on who is logged in */}
+            {isAdmin && (
+              <li>
+                <Link to="/admin/dashboard" onClick={() => setIsOpen(false)}>
+                  Admin Dashboard
+                </Link>
+              </li>
+            )}
+            {isSeller && (
+              <li>
+                <Link to="/seller/dashboard" onClick={() => setIsOpen(false)}>
+                  Seller Dashboard
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
 
@@ -47,9 +67,11 @@ const Navbar = () => {
           <button className="ge-icon-btn" aria-label="Search">
             <i className="bi bi-search"></i>
           </button>
-          <Link to="/profile" className="ge-icon-btn" aria-label="Account">
-            <i className="bi bi-person"></i>
-          </Link>
+          {!isSeller && (
+            <Link to="/profile" className="ge-icon-btn" aria-label="Account">
+              <i className="bi bi-person"></i>
+            </Link>
+          )}
           <Link to="/wishlist" className="ge-icon-btn" aria-label="Wishlist">
             <i className="bi bi-heart"></i>
           </Link>

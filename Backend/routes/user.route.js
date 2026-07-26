@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteUser, getAllUser, login, profile, register, updateUser, verifyEmail } from "../controllers/user.controller.js";
+import { changePassword, deleteUser, forgotPassword, getAllUser, login, profile, register, resetPassword, updateUser, verifyEmail } from "../controllers/user.controller.js";
 import { validation } from "../middlewares/validation.js";
 import { verifyAdmin, verifytoken, verifyUser } from "../middlewares/auth.middleware.js";
 
@@ -17,6 +17,14 @@ userRouter.get("/verify-email/:token", verifyEmail);
 //api/user/login
 userRouter.post('/login', login);
 
+// Forgot Password Route (sends reset link to email)
+// api/user/forgot-password
+userRouter.post('/forgot-password', forgotPassword);
+
+// Reset Password Route (sets the new password using the token from email)
+// api/user/reset-password/:token
+userRouter.post('/reset-password/:token', resetPassword);
+
 // get all user route
 // api/user/getalluser
 userRouter.get('/getalluser', verifytoken, verifyAdmin, getAllUser);
@@ -28,6 +36,10 @@ userRouter.get('/profile/:id', verifytoken, verifyUser, profile);
 // update user route
 // api/user/update/:id
 userRouter.patch('/update/:id', verifytoken, verifyUser, updateUser);
+
+// change password route (needs current password, used by Security tab)
+// api/user/change-password/:id
+userRouter.patch('/change-password/:id', verifytoken, verifyUser, changePassword);
 
 // delete user route
 // api/user/delete/:id

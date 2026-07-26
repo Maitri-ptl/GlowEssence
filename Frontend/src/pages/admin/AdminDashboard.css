@@ -1,0 +1,322 @@
+.ge-admin-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.ge-admin-header {
+  margin-bottom: 1.6rem;
+}
+
+.ge-admin-header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.3rem;
+}
+
+.ge-admin-header p {
+  color: var(--ge-text-muted);
+  font-size: 0.92rem;
+}
+
+.ge-admin-tabs {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1.6rem;
+  border-bottom: 1px solid #f0e6df;
+}
+
+.ge-admin-tabs button {
+  background: none;
+  border: none;
+  padding: 0.7rem 1rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--ge-text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.ge-admin-tabs button:hover {
+  color: var(--ge-gold);
+}
+
+.ge-admin-tabs button.active {
+  color: var(--ge-gold);
+  border-bottom-color: var(--ge-gold);
+}
+
+.ge-admin-alert {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  margin-bottom: 1.2rem;
+}
+
+.ge-admin-empty {
+  color: var(--ge-text-muted);
+  font-size: 0.88rem;
+  padding: 1.5rem 0;
+  text-align: center;
+}
+
+/* ---------------- Stat cards ---------------- */
+
+.ge-admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 1.6rem;
+}
+
+.ge-admin-stat-card {
+  background: var(--ge-white);
+  border-radius: var(--ge-radius);
+  box-shadow: var(--ge-shadow);
+  padding: 1.3rem;
+  text-align: center;
+}
+
+.ge-admin-stat-card span {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--ge-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+}
+
+.ge-admin-stat-card h3 {
+  font-size: 1.6rem;
+  color: var(--ge-gold);
+  margin: 0;
+}
+
+/* ---------------- Charts ---------------- */
+
+.ge-admin-charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.6rem;
+  margin-bottom: 1.6rem;
+}
+
+.ge-admin-chart-card {
+  background: var(--ge-white);
+  border-radius: var(--ge-radius);
+  box-shadow: var(--ge-shadow);
+  padding: 1.6rem;
+}
+
+.ge-admin-chart-card h2 {
+  font-size: 1.15rem;
+  margin: 0 0 1.4rem;
+}
+
+/* simple vertical bar chart, built with plain divs (no chart library) */
+.ge-admin-bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  height: 200px;
+}
+
+.ge-admin-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.ge-admin-bar-value {
+  font-size: 0.7rem;
+  color: var(--ge-text-muted);
+  margin-bottom: 0.3rem;
+}
+
+.ge-admin-bar-fill {
+  width: 100%;
+  max-width: 34px;
+  background: linear-gradient(180deg, var(--ge-gold-soft) 0%, var(--ge-gold) 100%);
+  border-radius: 6px 6px 0 0;
+  min-height: 4px;
+  transition: height 0.4s ease;
+}
+
+.ge-admin-bar-label {
+  font-size: 0.74rem;
+  color: var(--ge-text-muted);
+  margin-top: 0.5rem;
+}
+
+/* simple horizontal bar chart for a ranked list */
+.ge-admin-hbar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ge-admin-hbar-row {
+  display: grid;
+  grid-template-columns: 110px 1fr 70px;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.ge-admin-hbar-label {
+  font-size: 0.82rem;
+  color: var(--ge-charcoal);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ge-admin-hbar-track {
+  background: var(--ge-cream-deep);
+  border-radius: 999px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.ge-admin-hbar-fill {
+  height: 100%;
+  background: var(--ge-gold);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.ge-admin-hbar-value {
+  font-size: 0.76rem;
+  color: var(--ge-text-muted);
+  white-space: nowrap;
+}
+
+.ge-admin-recent-orders {
+  margin-bottom: 1.6rem;
+}
+
+.ge-admin-recent-orders .ge-admin-table-wrap {
+  box-shadow: none;
+}
+
+.ge-admin-alert-error {
+  background: rgba(192, 57, 43, 0.08);
+  color: #c0392b;
+  border: 1px solid rgba(192, 57, 43, 0.25);
+}
+
+.ge-admin-alert-success {
+  background: rgba(143, 174, 130, 0.12);
+  color: #4c7a3f;
+  border: 1px solid rgba(143, 174, 130, 0.35);
+}
+
+.ge-admin-table-wrap {
+  background: var(--ge-white);
+  border-radius: var(--ge-radius);
+  box-shadow: var(--ge-shadow);
+  overflow-x: auto;
+}
+
+.ge-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.ge-admin-table th,
+.ge-admin-table td {
+  padding: 0.9rem 1.1rem;
+  text-align: left;
+  border-bottom: 1px solid #f0e6df;
+  white-space: nowrap;
+}
+
+.ge-admin-table th {
+  color: var(--ge-text-muted);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+.ge-admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.ge-admin-role {
+  display: inline-block;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.ge-admin-role-user {
+  background: var(--ge-blush-soft);
+  color: var(--ge-charcoal);
+}
+
+.ge-admin-role-admin {
+  background: var(--ge-gold);
+  color: var(--ge-white);
+}
+
+.ge-admin-actions {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.ge-admin-actions button {
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ge-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+
+.ge-admin-actions button:hover {
+  color: var(--ge-gold);
+}
+
+.ge-admin-delete:hover {
+  color: #c0392b !important;
+}
+
+.ge-admin-table input.ge-form-control,
+.ge-admin-table select.ge-form-control {
+  min-width: 140px;
+}
+
+@media (max-width: 800px) {
+  .ge-admin-charts {
+    grid-template-columns: 1fr;
+  }
+
+  .ge-admin-hbar-row {
+    grid-template-columns: 80px 1fr 60px;
+  }
+}
+
+.ge-admin-catalog-form {
+  display: flex;
+  gap: 0.9rem;
+  margin-bottom: 1.6rem;
+  max-width: 480px;
+}
+
+.ge-admin-catalog-form input {
+  flex: 1;
+}
+
+.ge-admin-catalog-form button {
+  white-space: nowrap;
+}

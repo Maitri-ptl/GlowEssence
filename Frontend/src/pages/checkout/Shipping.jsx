@@ -1,27 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import CheckoutSteps from "../../components/layout/checkout/CheckoutSteps";
+import { fetchCart } from "../../features/cart/cartSlicer";
 import "./Checkout.css";
-
-const ORDER_ITEMS = [
-  {
-    id: 1,
-    name: "Vitamin C Face Serum",
-    variant: "30 ml",
-    qty: 1,
-    price: "₹ 899",
-    image: "https://proskire.in/cdn/shop/files/Untitled-3.jpg?v=1770361489",
-  },
-  {
-    id: 2,
-    name: "Aloe Vera Face Wash",
-    variant: "150 ml",
-    qty: 1,
-    price: "₹ 549",
-    image:
-      "https://m.media-amazon.com/images/I/71RjwtQtYSL._AC_UF1000,1000_QL80_.jpg",
-  },
-];
 
 const INITIAL_FORM = {
   firstName: "",
@@ -36,9 +18,32 @@ const INITIAL_FORM = {
 
 const Shipping = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { currentUser } = useSelector((state) => state.users);
+  const { items } = useSelector((state) => state.cart);
+
   const [form, setForm] = useState(INITIAL_FORM);
   const [shippingMethod, setShippingMethod] = useState("express");
   const [errors, setErrors] = useState({});
+
+  // load the real cart so the order summary here matches the cart page
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(fetchCart());
+    }
+  }, [dispatch, currentUser]);
+
+  // shipping cost depends on which option is selected
+  const shippingCost = shippingMethod === "standard" ? 0 : 150;
+
+  // add up price * quantity for every item in the cart
+  const subtotal = items.reduce(
+    (sum, item) => sum + item.product.price * item.quantity,
+    0
+  );
+
+  const total = subtotal + shippingCost;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -276,15 +281,16 @@ const Shipping = () => {
             </div>
 
             <ul className="ge-order-items">
-              {ORDER_ITEMS.map((item) => (
-                <li key={item.id}>
-                  <img src={item.image} alt={item.name} />
+              {items.map((item) => (
+                <li key={item._id}>
+                  <img src={item.product.image} alt={item.product.name} />
                   <div className="ge-order-item-info">
-                    <h4>{item.name}</h4>
-                    <span>{item.variant}</span>
-                    <span>Quantity {item.qty}</span>
+                    <h4>{item.product.name}</h4>
+                    <span>Quantity {item.quantity}</span>
                   </div>
-                  <span className="ge-order-item-price">{item.price}</span>
+                  <span className="ge-order-item-price">
+                    ₹ {item.product.price * item.quantity}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -293,18 +299,18 @@ const Shipping = () => {
 
             <div className="ge-order-row">
               <span>Subtotal</span>
-              <span>₹ 1,448</span>
+              <span>₹ {subtotal}</span>
             </div>
             <div className="ge-order-row">
               <span>Shipping</span>
-              <span>₹ 150</span>
+              <span>{shippingCost === 0 ? "Free" : `₹ ${shippingCost}`}</span>
             </div>
 
             <div className="ge-order-divider"></div>
 
             <div className="ge-order-row ge-order-total">
               <span>Total</span>
-              <span>₹ 1,598</span>
+              <span>₹ {total}</span>
             </div>
           </aside>
         </div>

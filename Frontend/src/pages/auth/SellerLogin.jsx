@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSeller } from "../../features/sellers/sellerSlicer";
+import { logoutUser } from "../../features/users/userSlicer";
 import "./Auth.css";
 
 const SellerLogin = () => {

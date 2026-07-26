@@ -59,6 +59,16 @@ export const verifySeller = (req, res, next) => {
     return res.status(400).json({ success: false, message: "Seller access only" })
 }
 
+// lets either an admin OR a seller through (used for category/brand
+// create/update/delete, since sellers manage their own catalog too)
+export const verifyAdminOrSeller = (req, res, next) => {
+    if (req.user.role == 'admin' || req.user.role == 'seller') {
+        return next();
+    }
+
+    return res.status(400).json({ success: false, message: "Admin or seller access only" })
+}
+
 // allows a seller to access only their own /profile/:id or /update/:id etc.
 export const verifySellerSelf = (req, res, next) => {
     const { id } = req.params;

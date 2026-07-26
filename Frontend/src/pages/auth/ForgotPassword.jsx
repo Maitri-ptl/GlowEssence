@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { forgotPassword } from "../../features/users/userSlicer";
 import "./Auth.css";
 
 const ForgotPassword = () => {
+  const dispatch = useDispatch();
+  const { isLoading, error, message } = useSelector((state) => state.users);
+
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(forgotPassword(email));
+  };
+
   return (
     <div className="ge-auth-page">
       <div className="ge-auth-visual">
@@ -32,7 +44,14 @@ const ForgotPassword = () => {
             link to reset it.
           </p>
 
-          <form onSubmit={(e) => e.preventDefault()}>
+          {error && (
+            <p className="ge-auth-alert ge-auth-alert-error">{error}</p>
+          )}
+          {message && (
+            <p className="ge-auth-alert ge-auth-alert-success">{message}</p>
+          )}
+
+          <form onSubmit={handleSubmit}>
             <div className="ge-form-group">
               <label className="ge-label" htmlFor="forgot-email">
                 Email Address
@@ -42,12 +61,20 @@ const ForgotPassword = () => {
                 type="email"
                 className="ge-form-control"
                 placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
 
             <div className="ge-auth-submit" style={{ marginTop: "1.6rem" }}>
-              <button type="submit" className="ge-btn-gold" style={{ width: "100%" }}>
-                Send Reset Link
+              <button
+                type="submit"
+                className="ge-btn-gold"
+                style={{ width: "100%" }}
+                disabled={isLoading}
+              >
+                {isLoading ? "Sending..." : "Send Reset Link"}
               </button>
             </div>
           </form>

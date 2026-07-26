@@ -1,0 +1,217 @@
+/* ---------------- Hero ---------------- */
+
+.ge-about-hero {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 5rem 1.5rem 3.5rem;
+}
+
+.ge-about-hero .ge-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 0.78rem;
+  color: var(--ge-gold);
+  font-weight: 600;
+}
+
+.ge-about-hero h1 {
+  font-size: 3rem;
+  margin: 0.8rem 0 1.2rem;
+}
+
+.ge-about-hero p {
+  color: var(--ge-text-muted);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+/* ---------------- Story ---------------- */
+
+.ge-about-story {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 5.5rem;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.ge-about-story-text .ge-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.76rem;
+  color: var(--ge-gold);
+  font-weight: 600;
+}
+
+.ge-about-story-text h2 {
+  font-size: 2.1rem;
+  margin: 0.7rem 0 1rem;
+  line-height: 1.3;
+}
+
+.ge-about-divider {
+  width: 56px;
+  height: 2px;
+  background: var(--ge-gold);
+  margin-bottom: 1.4rem;
+}
+
+.ge-about-story-text p {
+  color: var(--ge-text-muted);
+  line-height: 1.8;
+  margin-bottom: 1.3rem;
+}
+
+.ge-about-story-stats {
+  background: var(--ge-cream-deep);
+  border-radius: 20px;
+  padding: 2.5rem 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.ge-about-stat {
+  text-align: center;
+}
+
+.ge-about-stat h3 {
+  font-size: 2rem;
+  color: var(--ge-gold);
+  margin: 0 0 0.3rem;
+}
+
+.ge-about-stat span {
+  font-size: 0.78rem;
+  color: var(--ge-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ---------------- Values ---------------- */
+
+.ge-about-values {
+  background: var(--ge-cream-deep);
+  padding: 5.5rem 1.5rem;
+}
+
+.ge-about-section-head {
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto 3rem;
+}
+
+.ge-about-section-head .ge-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.76rem;
+  color: var(--ge-gold);
+  font-weight: 600;
+}
+
+.ge-about-section-head h2 {
+  font-size: 2.4rem;
+  margin: 0.7rem 0 1rem;
+}
+
+.ge-about-values-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.8rem;
+}
+
+.ge-about-value-card {
+  background: var(--ge-white);
+  border-radius: 18px;
+  padding: 2rem 1.6rem;
+  text-align: center;
+  box-shadow: var(--ge-shadow);
+  transition: transform var(--ge-transition);
+}
+
+.ge-about-value-card:hover {
+  transform: translateY(-6px);
+}
+
+.ge-about-value-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--ge-blush-soft);
+  color: var(--ge-gold);
+  font-size: 1.4rem;
+  margin-bottom: 1.1rem;
+}
+
+.ge-about-value-card h3 {
+  font-size: 1.05rem;
+  margin: 0 0 0.6rem;
+}
+
+.ge-about-value-card p {
+  color: var(--ge-text-muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+/* ---------------- CTA ---------------- */
+
+.ge-about-cta {
+  text-align: center;
+  padding: 5.5rem 1.5rem;
+  background: linear-gradient(135deg, var(--ge-charcoal) 0%, #4a3f3a 100%);
+}
+
+.ge-about-cta h2 {
+  font-size: 2.2rem;
+  color: var(--ge-white);
+  margin: 0 0 0.8rem;
+}
+
+.ge-about-cta p {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1.8rem;
+}
+
+/* ---------------- Responsive ---------------- */
+
+@media (max-width: 900px) {
+  .ge-about-story {
+    grid-template-columns: 1fr;
+  }
+
+  .ge-about-hero h1 {
+    font-size: 2.3rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .ge-about-hero {
+    padding: 3.5rem 1.2rem 2.5rem;
+  }
+
+  .ge-about-story {
+    padding: 1.5rem 1.2rem 4rem;
+  }
+
+  .ge-about-values {
+    padding: 4rem 1.2rem;
+  }
+
+  .ge-about-cta {
+    padding: 4rem 1.2rem;
+  }
+
+  .ge-about-story-stats {
+    grid-template-columns: 1fr 1fr;
+    padding: 2rem 1rem;
+  }
+}

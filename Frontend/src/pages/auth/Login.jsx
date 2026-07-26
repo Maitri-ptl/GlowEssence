@@ -1,13 +1,19 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../features/users/userSlicer";
+import { logoutSeller } from "../../features/sellers/sellerSlicer";
 import "./Auth.css";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading, error } = useSelector((state) => state.users);
+
+  // "verified" comes from the email verification link redirect,
+  // e.g. /login?verified=success or /login?verified=failed
+  const [searchParams] = useSearchParams();
+  const verified = searchParams.get("verified");
 
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -18,6 +24,9 @@ const Login = () => {
 
     try {
       await dispatch(loginUser({ email, password })).unwrap();
+      // clear any leftover seller session so the navbar doesn't get confused
+      // about which role is actually logged in right now
+      dispatch(logoutSeller());
       navigate("/");
     } catch (err) {
       // error message is already saved in redux state, nothing else to do
@@ -43,6 +52,17 @@ const Login = () => {
           <p className="ge-auth-subtitle">
             Enter your details to access your GlowEssence account.
           </p>
+
+          {verified === "success" && (
+            <p className="ge-auth-alert ge-auth-alert-success">
+              Email verified successfully. You can now log in.
+            </p>
+          )}
+          {verified === "failed" && (
+            <p className="ge-auth-alert ge-auth-alert-error">
+              That verification link is invalid or has expired.
+            </p>
+          )}
 
           {error && (
             <p className="ge-auth-alert ge-auth-alert-error">{error}</p>

@@ -2,6 +2,8 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Layout from "../components/layout/Layout";
 import ProtectedRoute from "./ProtectedRoute";
+import AdminRoute from "./AdminRoute";
+import SellerRoute from "./SellerRoute";
 import Home from "../pages/home/Home";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
@@ -15,6 +17,10 @@ import Cart from "../pages/cart/Cart";
 import Shipping from "../pages/checkout/Shipping";
 import Payment from "../pages/checkout/Payment";
 import Wishlist from "../pages/wishlist/Wishlist";
+import Shop from "../pages/shop/Shop";
+import About from "../pages/about/About";
+import AdminDashboard from "../pages/admin/AdminDashboard";
+import SellerDashboard from "../pages/seller/SellerDashboard";
 import NotFound from "../pages/error/NotFound";
 
 const AppRoutes = () => {
@@ -27,8 +33,10 @@ const AppRoutes = () => {
         <Route path="/seller/register" element={<SellerRegister />} />
         <Route path="/seller/login" element={<SellerLogin />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/about" element={<About />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout/shipping" element={<Shipping />} />
         <Route path="/checkout/payment" element={<Payment />} />
@@ -36,6 +44,14 @@ const AppRoutes = () => {
 
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<Profile />} />
+        </Route>
+
+        <Route element={<AdminRoute />}>
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        </Route>
+
+        <Route element={<SellerRoute />}>
+          <Route path="/seller/dashboard" element={<SellerDashboard />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

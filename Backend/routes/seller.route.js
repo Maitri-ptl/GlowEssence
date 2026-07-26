@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteSeller, loginSeller, registerSeller, sellerProfile, updateSeller } from "../controllers/seller.controller.js";
+import { deleteSeller, loginSeller, registerSeller, sellerDashboardStats, sellerProfile, updateSeller } from "../controllers/seller.controller.js";
 import { sellerValidation } from "../middlewares/validation.js";
 import { verifySeller, verifySellerSelf, verifytoken } from "../middlewares/auth.middleware.js";
 
@@ -16,6 +16,10 @@ sellerRouter.post('/login', loginSeller);
 // get own profile
 // api/seller/profile/:id
 sellerRouter.get('/profile/:id', verifytoken, verifySeller, verifySellerSelf, sellerProfile);
+
+// get own dashboard numbers (total products, total revenue)
+// api/seller/dashboard
+sellerRouter.get('/dashboard', verifytoken, verifySeller, sellerDashboardStats);
 
 // update own profile
 // api/seller/update/:id

@@ -7,6 +7,32 @@ const authHeaders = (token) => ({
     Authorization: `Bearer ${token}`,
 });
 
+// Add a product to the wishlist
+export const addToWishlist = createAsyncThunk(
+    "wishlist/addToWishlist",
+    async (productId, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().users.token;
+
+            const res = await fetch(`${BASE_URL}/add-wishlist`, {
+                method: "POST",
+                headers: authHeaders(token),
+                body: JSON.stringify({ productId }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return rejectWithValue(data.message || "Failed to add to wishlist");
+            }
+
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Get logged in user's wishlist
 export const fetchWishlist = createAsyncThunk(
     "wishlist/fetchWishlist",
@@ -66,6 +92,17 @@ const wishlist = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(addToWishlist.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(addToWishlist.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(addToWishlist.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
             .addCase(fetchWishlist.pending, (state) => {
                 state.isLoading = true;
                 state.error = null;

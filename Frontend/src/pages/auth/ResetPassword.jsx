@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { resetPassword } from "../../features/users/userSlicer";
 import "./Auth.css";
 
 const getStrength = (password) => {
@@ -13,11 +15,36 @@ const STRENGTH_LABELS = ["", "Weak", "Medium", "Strong"];
 const STRENGTH_CLASSES = ["", "active-weak", "active-medium", "active-strong"];
 
 const ResetPassword = () => {
+  const { token } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoading, error, message } = useSelector((state) => state.users);
+
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [formError, setFormError] = useState("");
 
   const strength = getStrength(password);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormError("");
+
+    if (password !== confirmPassword) {
+      setFormError("Passwords do not match.");
+      return;
+    }
+
+    try {
+      // .unwrap() lets us use a normal try/catch here
+      await dispatch(resetPassword({ token, password })).unwrap();
+      navigate("/login");
+    } catch (err) {
+      // error message is already saved in redux state, nothing else to do
+    }
+  };
 
   return (
     <div className="ge-auth-page">
@@ -44,7 +71,17 @@ const ResetPassword = () => {
             passwords.
           </p>
 
-          <form onSubmit={(e) => e.preventDefault()}>
+          {formError && (
+            <p className="ge-auth-alert ge-auth-alert-error">{formError}</p>
+          )}
+          {error && (
+            <p className="ge-auth-alert ge-auth-alert-error">{error}</p>
+          )}
+          {message && (
+            <p className="ge-auth-alert ge-auth-alert-success">{message}</p>
+          )}
+
+          <form onSubmit={handleSubmit}>
             <div className="ge-form-group">
               <label className="ge-label" htmlFor="reset-password">
                 New Password
@@ -57,6 +94,7 @@ const ResetPassword = () => {
                   placeholder="Enter new password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
                 <button
                   type="button"
@@ -97,6 +135,9 @@ const ResetPassword = () => {
                   type={showConfirm ? "text" : "password"}
                   className="ge-form-control"
                   placeholder="Re-enter new password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
                 />
                 <button
                   type="button"
@@ -110,8 +151,13 @@ const ResetPassword = () => {
             </div>
 
             <div className="ge-auth-submit" style={{ marginTop: "1.6rem" }}>
-              <button type="submit" className="ge-btn-gold" style={{ width: "100%" }}>
-                Reset Password
+              <button
+                type="submit"
+                className="ge-btn-gold"
+                style={{ width: "100%" }}
+                disabled={isLoading}
+              >
+                {isLoading ? "Resetting..." : "Reset Password"}
               </button>
             </div>
           </form>

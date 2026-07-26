@@ -1,5 +1,29 @@
 import mongoose from "mongoose";
 
+// one order can now hold MULTIPLE products (like a real cart checkout)
+// so instead of a single "product" + "quantity" field,
+// we store a list of items, each with its own product, quantity and price
+const orderItemSchema = new mongoose.Schema(
+    {
+        product: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Product",
+            required: true
+        },
+        quantity: {
+            type: Number,
+            default: 1
+        },
+        // price of ONE unit at the time of order (so it doesn't change later
+        // even if the product price changes in future)
+        price: {
+            type: Number,
+            required: true
+        }
+    },
+    { _id: false }
+);
+
 const orderSchema = new mongoose.Schema(
     {
         user: {
@@ -8,17 +32,13 @@ const orderSchema = new mongoose.Schema(
             required: true
         },
 
-        product: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Product",
+        // list of all products bought in this single order
+        items: {
+            type: [orderItemSchema],
             required: true
         },
 
-        quantity: {
-            type: Number,
-            default: 1
-        },
-
+        // total price of ALL items combined
         totalPrice: {
             type: Number,
             required: true

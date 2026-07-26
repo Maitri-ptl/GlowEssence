@@ -37,6 +37,15 @@ const userSchema = new mongoose.Schema(
         // Token kab expire hoga
         verificationTokenExpire: {
             type: Date
+        },
+        // Forgot Password token store hoga (same idea as verificationToken above)
+        resetPasswordToken: {
+            type: String,
+            default: ""
+        },
+        // Reset token kab expire hoga
+        resetPasswordExpire: {
+            type: Date
         }
     },
     {

@@ -1,0 +1,469 @@
+.ge-shop-page {
+  padding-bottom: 4rem;
+}
+
+/* Page banner */
+.ge-shop-hero {
+  position: relative;
+  padding: 4.5rem 1.5rem;
+  text-align: center;
+  background-image: linear-gradient(
+      160deg,
+      rgba(20, 15, 10, 0.5) 0%,
+      rgba(20, 15, 10, 0.25) 60%,
+      rgba(20, 15, 10, 0.35) 100%
+    ),
+    url("../../assets/Home-Bg.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.ge-shop-hero .ge-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.8rem;
+  color: var(--ge-gold-soft);
+  font-weight: 600;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+}
+
+.ge-shop-hero h1 {
+  font-size: 2.6rem;
+  margin: 0.6rem 0 0.6rem;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+}
+
+.ge-shop-hero p {
+  color: #f1ece6;
+  font-size: 0.95rem;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Layout: sidebar + grid */
+.ge-shop-body {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 0;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* ---------------- Sidebar filters ---------------- */
+
+.ge-shop-filters {
+  background: var(--ge-white);
+  border-radius: var(--ge-radius);
+  padding: 1.6rem;
+  box-shadow: var(--ge-shadow);
+  border-top: 3px solid var(--ge-gold);
+}
+
+.ge-shop-filters-title {
+  font-size: 1.1rem;
+  margin: 0 0 1.2rem;
+}
+
+.ge-filter-section {
+  border-top: 1px solid #f0e6df;
+  padding: 1rem 0;
+}
+
+.ge-filter-section:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.ge-filter-head {
+  width: 100%;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--ge-font-body);
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--ge-charcoal);
+  cursor: pointer;
+  padding: 0;
+}
+
+.ge-filter-body {
+  margin-top: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.ge-filter-option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--ge-text-muted);
+  cursor: pointer;
+}
+
+.ge-filter-option input {
+  accent-color: var(--ge-gold);
+  width: 15px;
+  height: 15px;
+}
+
+.ge-filter-static-title {
+  font-size: 0.92rem;
+  font-weight: 500;
+  margin: 0 0 0.8rem;
+}
+
+.ge-filter-category-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ge-filter-category-list button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.85rem;
+  color: var(--ge-text-muted);
+  cursor: pointer;
+  text-align: left;
+}
+
+.ge-filter-category-list button:hover {
+  color: var(--ge-gold);
+}
+
+.ge-filter-category-list button.active {
+  color: var(--ge-gold);
+  font-weight: 600;
+}
+
+.ge-best-seller-card {
+  display: block;
+  background: var(--ge-cream-deep);
+  border-radius: 14px;
+  padding: 1rem;
+  transition: transform var(--ge-transition), box-shadow var(--ge-transition);
+}
+
+.ge-best-seller-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ge-shadow);
+}
+
+.ge-best-seller-card img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 0.8rem;
+}
+
+.ge-best-seller-card h4 {
+  font-size: 0.92rem;
+  margin: 0 0 0.4rem;
+}
+
+.ge-best-seller-price {
+  display: block;
+  margin-top: 0.4rem;
+  font-weight: 600;
+  color: var(--ge-charcoal);
+}
+
+/* shared star rating */
+.ge-shop-rating {
+  color: var(--ge-gold);
+  font-size: 0.8rem;
+  margin: 0.3rem 0;
+}
+
+/* ---------------- Main product area ---------------- */
+
+.ge-shop-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.6rem;
+}
+
+.ge-shop-view-toggle {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.ge-shop-view-toggle button {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid #e7dcd4;
+  background: var(--ge-white);
+  color: var(--ge-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ge-shop-view-toggle button.active {
+  background: var(--ge-charcoal);
+  color: var(--ge-white);
+  border-color: var(--ge-charcoal);
+}
+
+.ge-shop-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  flex-wrap: wrap;
+}
+
+.ge-shop-sort {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.88rem;
+  color: var(--ge-text-muted);
+}
+
+.ge-shop-sort select {
+  border: 1px solid #e7dcd4;
+  border-radius: 8px;
+  padding: 0.4rem 0.7rem;
+  background: var(--ge-white);
+  color: var(--ge-charcoal);
+  font-family: var(--ge-font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.ge-shop-count {
+  font-size: 0.85rem;
+  color: var(--ge-text-muted);
+  white-space: nowrap;
+}
+
+.ge-shop-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.8rem;
+}
+
+/* List view: one column, each card laid out as a horizontal row.
+   Using two classes together here so this always wins over the
+   responsive ".ge-shop-grid" column-count rules below, no matter
+   what screen size we're on. */
+.ge-shop-grid.ge-shop-grid-list {
+  grid-template-columns: 1fr;
+  gap: 1.2rem;
+}
+
+.ge-shop-grid-list .ge-shop-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--ge-white);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: var(--ge-shadow);
+}
+
+.ge-shop-grid-list .ge-shop-card-media {
+  width: 140px;
+  flex-shrink: 0;
+  margin-bottom: 0;
+}
+
+.ge-shop-card {
+  display: block;
+  color: inherit;
+  transition: transform var(--ge-transition);
+}
+
+.ge-shop-card:hover {
+  transform: translateY(-4px);
+}
+
+.ge-shop-card-media {
+  position: relative;
+  background: var(--ge-cream-deep);
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  margin-bottom: 0.9rem;
+  box-shadow: var(--ge-shadow);
+}
+
+.ge-shop-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--ge-transition);
+}
+
+.ge-shop-card:hover .ge-shop-card-media img {
+  transform: scale(1.08);
+}
+
+.ge-shop-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--ge-charcoal);
+  color: var(--ge-white);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+}
+
+.ge-shop-wishlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ge-charcoal);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background var(--ge-transition), color var(--ge-transition);
+}
+
+.ge-shop-wishlist-btn:hover {
+  background: var(--ge-charcoal);
+  color: var(--ge-white);
+}
+
+.ge-shop-card h3 {
+  font-size: 0.95rem;
+  margin: 0 0 0.3rem;
+}
+
+.ge-shop-price {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.92rem;
+}
+
+.ge-price-new {
+  font-weight: 600;
+  color: var(--ge-charcoal);
+}
+
+.ge-price-old {
+  text-decoration: line-through;
+  color: var(--ge-text-muted);
+  font-size: 0.82rem;
+}
+
+.ge-shop-empty {
+  text-align: center;
+  color: var(--ge-text-muted);
+  padding: 3rem 0;
+}
+
+.ge-shop-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.ge-shop-page-info {
+  font-size: 0.85rem;
+  color: var(--ge-text-muted);
+}
+
+.ge-shop-pagination button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: var(--ge-cream-deep);
+  color: var(--ge-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ge-shop-pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ge-shop-pagination button.active {
+  background: var(--ge-gold);
+  color: var(--ge-white);
+}
+
+/* ---------------- Responsive ---------------- */
+
+@media (max-width: 1100px) {
+  .ge-shop-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .ge-shop-body {
+    grid-template-columns: 1fr;
+  }
+
+  .ge-shop-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .ge-shop-hero {
+    padding: 2.5rem 1.2rem;
+  }
+
+  .ge-shop-hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .ge-shop-body {
+    padding: 1.8rem 1rem 0;
+    gap: 1.6rem;
+  }
+
+  .ge-shop-toolbar-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .ge-shop-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .ge-shop-card h3 {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .ge-shop-grid {
+    grid-template-columns: 1fr;
+  }
+}

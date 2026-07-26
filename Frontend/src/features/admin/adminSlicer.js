@@ -1,0 +1,248 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+const BASE_URL = "/api/admin";
+
+const authHeaders = (token) => ({
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+});
+
+// Get every registered user (admin only)
+export const fetchAllUsers = createAsyncThunk(
+    "admin/fetchAllUsers",
+    async (_, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().users.token;
+
+            const res = await fetch(`${BASE_URL}/users`, {
+                headers: authHeaders(token),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return rejectWithValue(data.message || "Failed to load users");
+            }
+
+            return data.users;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+// Update any user's details (admin only)
+export const updateUserByAdmin = createAsyncThunk(
+    "admin/updateUserByAdmin",
+    async ({ id, updates }, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().users.token;
+
+            const res = await fetch(`${BASE_URL}/users/${id}`, {
+                method: "PATCH",
+                headers: authHeaders(token),
+                body: JSON.stringify(updates),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return rejectWithValue(data.message || "Failed to update user");
+            }
+
+            return data.user;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+// Delete any user (admin only)
+export const deleteUserByAdmin = createAsyncThunk(
+    "admin/deleteUserByAdmin",
+    async (id, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().users.token;
+
+            const res = await fetch(`${BASE_URL}/users/${id}`, {
+                method: "DELETE",
+                headers: authHeaders(token),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return rejectWithValue(data.message || "Failed to delete user");
+            }
+
+            return id;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+// Dashboard summary numbers (total users, sellers, products, orders, revenue)
+export const fetchDashboardSummary = createAsyncThunk(
+    "admin/fetchDashboardSummary",
+    async (_, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().users.token;
+
+            const res = await fetch(`${BASE_URL}/dashboard`, {
+                headers: authHeaders(token),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return rejectWithValue(data.message || "Failed to load dashboard");
+            }
+
+            return data.dashboard;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+// Revenue grouped by month, for the bar chart
+export const fetchMonthlyRevenue = createAsyncThunk(
+    "admin/fetchMonthlyRevenue",
+    async (_, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().users.token;
+
+            const res = await fetch(`${BASE_URL}/monthly-revenue`, {
+                headers: authHeaders(token),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return rejectWithValue(data.message || "Failed to load revenue");
+            }
+
+            return data.revenue;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+// Best-selling products
+export const fetchTopProducts = createAsyncThunk(
+    "admin/fetchTopProducts",
+    async (_, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().users.token;
+
+            const res = await fetch(`${BASE_URL}/top-products`, {
+                headers: authHeaders(token),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return rejectWithValue(data.message || "Failed to load top products");
+            }
+
+            return data.products;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+// Most recent orders
+export const fetchRecentOrders = createAsyncThunk(
+    "admin/fetchRecentOrders",
+    async (_, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().users.token;
+
+            const res = await fetch(`${BASE_URL}/recent-orders`, {
+                headers: authHeaders(token),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return rejectWithValue(data.message || "Failed to load recent orders");
+            }
+
+            return data.orders;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+const admin = createSlice({
+    name: "admin",
+    initialState: {
+        users: [],
+        summary: null,
+        monthlyRevenue: [],
+        topProducts: [],
+        recentOrders: [],
+        isLoading: false,
+        error: null,
+        message: null,
+    },
+    reducers: {
+        clearAdminStatus: (state) => {
+            state.error = null;
+            state.message = null;
+        },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchAllUsers.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(fetchAllUsers.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.users = action.payload;
+            })
+            .addCase(fetchAllUsers.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
+            .addCase(updateUserByAdmin.fulfilled, (state, action) => {
+                const index = state.users.findIndex(
+                    (user) => user._id === action.payload._id
+                );
+                if (index !== -1) {
+                    state.users[index] = action.payload;
+                }
+                state.message = "User updated.";
+            })
+            .addCase(updateUserByAdmin.rejected, (state, action) => {
+                state.error = action.payload;
+            })
+            .addCase(deleteUserByAdmin.fulfilled, (state, action) => {
+                state.users = state.users.filter((user) => user._id !== action.payload);
+                state.message = "User deleted.";
+            })
+            .addCase(deleteUserByAdmin.rejected, (state, action) => {
+                state.error = action.payload;
+            })
+            .addCase(fetchDashboardSummary.fulfilled, (state, action) => {
+                state.summary = action.payload;
+            })
+            .addCase(fetchMonthlyRevenue.fulfilled, (state, action) => {
+                state.monthlyRevenue = action.payload;
+            })
+            .addCase(fetchTopProducts.fulfilled, (state, action) => {
+                state.topProducts = action.payload;
+            })
+            .addCase(fetchRecentOrders.fulfilled, (state, action) => {
+                state.recentOrders = action.payload;
+            });
+    },
+});
+
+export const { clearAdminStatus } = admin.actions;
+export const adminReducer = admin.reducer;

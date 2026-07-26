@@ -103,6 +103,7 @@ const seller = createSlice({
                 state.currentSeller = {
                     id: action.payload.sellerId,
                     name: action.payload.name,
+                    role: "seller",
                 };
                 state.token = action.payload.token;
                 localStorage.setItem("geSeller", JSON.stringify(state.currentSeller));

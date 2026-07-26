@@ -1,88 +1,119 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import CheckoutSteps from "../../components/layout/checkout/CheckoutSteps";
+import { fetchCart, clearCart } from "../../features/cart/cartSlicer";
+import {
+  createOrder,
+  verifyOrderPayment,
+  clearOrderStatus,
+} from "../../features/orders/orderSlicer";
 import "./Checkout.css";
 
-const ORDER_ITEMS = [
-  {
-    id: 1,
-    name: "Vitamin C Face Serum",
-    variant: "30 ml",
-    qty: 1,
-    price: "₹ 899",
-    image: "https://proskire.in/cdn/shop/files/Untitled-3.jpg?v=1770361489",
-  },
-  {
-    id: 2,
-    name: "Aloe Vera Face Wash",
-    variant: "150 ml",
-    qty: 1,
-    price: "₹ 549",
-    image:
-      "https://m.media-amazon.com/images/I/71RjwtQtYSL._AC_UF1000,1000_QL80_.jpg",
-  },
-  
-];
-
-const INITIAL_FORM = {
-  nameOnCard: "",
-  cardNumber: "",
-  expiryDate: "",
-  cvc: "",
-};
+// Razorpay's public key. This one is safe to use in frontend code
+// (only the SECRET key must stay on the backend, never here).
+const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
 const Payment = () => {
-  const navigate = useNavigate();
-  const [paymentMethod, setPaymentMethod] = useState("card");
-  const [form, setForm] = useState(INITIAL_FORM);
-  const [errors, setErrors] = useState({});
+  const dispatch = useDispatch();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+  const { currentUser } = useSelector((state) => state.users);
+  const { items } = useSelector((state) => state.cart);
+  const { isLoading, error, completedOrder } = useSelector(
+    (state) => state.order
+  );
+
+  // load the latest cart when this page opens
+  // and clear any old success/error message from a previous visit
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(fetchCart());
+    }
+    dispatch(clearOrderStatus());
+  }, [dispatch, currentUser]);
+
+  // total price of everything currently in the cart
+  const totalPrice = items.reduce(
+    (sum, item) => sum + item.product.price * item.quantity,
+    0
+  );
+
+  // this runs when the customer clicks "Pay Now"
+  const handlePayNow = async () => {
+    // turn the cart items into the simple { productId, quantity } shape
+    // that the backend order API expects
+    const orderItems = items.map((item) => ({
+      productId: item.product._id,
+      quantity: item.quantity,
+    }));
+
+    try {
+      // Step 1: ask the backend to create ONE Razorpay order for the whole cart
+      const result = await dispatch(createOrder(orderItems)).unwrap();
+      const { razorpayOrder } = result;
+
+      // Step 2: open Razorpay's own payment popup
+      // (this is where the customer enters card / UPI / wallet details)
+      const options = {
+        key: RAZORPAY_KEY,
+        amount: razorpayOrder.amount,
+        currency: razorpayOrder.currency,
+        order_id: razorpayOrder.id,
+        name: "GlowEssence",
+        description: "Order Payment",
+        theme: { color: "#b8935f" },
+
+        // Razorpay calls this function automatically after payment succeeds
+        handler: async (response) => {
+          try {
+            // Step 3: send the payment details back to the backend to verify
+            await dispatch(
+              verifyOrderPayment({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                items: orderItems,
+              })
+            ).unwrap();
+
+            // Step 4: payment confirmed, so empty the cart
+            dispatch(clearCart());
+          } catch (err) {
+            // error message is already saved in redux state, nothing else to do
+          }
+        },
+      };
+
+      const razorpayCheckout = new window.Razorpay(options);
+      razorpayCheckout.open();
+    } catch (err) {
+      // error message is already saved in redux state, nothing else to do
+    }
   };
 
-  const validate = () => {
-    if (paymentMethod !== "card") {
-      setErrors({});
-      return true;
-    }
+  // once payment is verified, show a simple success screen instead of the form
+  if (completedOrder) {
+    return (
+      <section className="ge-checkout-page">
+        <div className="ge-checkout-card ge-order-success">
+          <span className="ge-order-success-icon">
+            <i className="bi bi-check-circle"></i>
+          </span>
 
-    const newErrors = {};
+          <h1 className="ge-checkout-title">Payment Successful!</h1>
 
-    if (!form.nameOnCard.trim()) {
-      newErrors.nameOnCard = "Name on card is required";
-    }
+          <p>
+            Your order <strong>#{completedOrder._id}</strong> has been placed
+            successfully.
+          </p>
 
-    const digitsOnly = form.cardNumber.replace(/\s/g, "");
-    if (!digitsOnly) {
-      newErrors.cardNumber = "Card number is required";
-    } else if (!/^\d{13,19}$/.test(digitsOnly)) {
-      newErrors.cardNumber = "Enter a valid card number";
-    }
-
-    if (!form.expiryDate.trim()) {
-      newErrors.expiryDate = "Expiry date is required";
-    } else if (!/^(0[1-9]|1[0-2])\s*\/\s*\d{2}$/.test(form.expiryDate.trim())) {
-      newErrors.expiryDate = "Use MM / YY format";
-    }
-
-    if (!form.cvc.trim()) {
-      newErrors.cvc = "CVC is required";
-    } else if (!/^\d{3,4}$/.test(form.cvc.trim())) {
-      newErrors.cvc = "Enter a valid CVC";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      navigate("/");
-    }
-  };
+          <Link to="/" className="ge-btn-gold">
+            Back to Home
+          </Link>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="ge-checkout-page">
@@ -90,121 +121,48 @@ const Payment = () => {
         <CheckoutSteps active="payment" />
 
         <div className="ge-checkout-grid">
-          <form className="ge-checkout-form" onSubmit={handleSubmit} noValidate>
-            <h1 className="ge-checkout-title">Payment Method</h1>
+          <div className="ge-checkout-form">
+            <h1 className="ge-checkout-title">Payment</h1>
 
-            <div className="ge-payment-methods">
-              <label
-                className={`ge-payment-option ${
-                  paymentMethod === "card" ? "is-selected" : ""
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="payment-method"
-                  checked={paymentMethod === "card"}
-                  onChange={() => setPaymentMethod("card")}
-                />
-                Card
-              </label>
-
-              <label
-                className={`ge-payment-option ${
-                  paymentMethod === "paypal" ? "is-selected" : ""
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="payment-method"
-                  checked={paymentMethod === "paypal"}
-                  onChange={() => setPaymentMethod("paypal")}
-                />
-                PayPal
-              </label>
-            </div>
-
-            {paymentMethod === "card" && (
-              <div className="ge-card-fields">
-                <div className="ge-form-row">
-                  <div className="ge-field">
-                    <label className="ge-label">Name on card</label>
-                    <input
-                      type="text"
-                      name="nameOnCard"
-                      className={`ge-form-control ${
-                        errors.nameOnCard ? "is-invalid" : ""
-                      }`}
-                      placeholder="Name on card"
-                      value={form.nameOnCard}
-                      onChange={handleChange}
-                    />
-                    {errors.nameOnCard && (
-                      <span className="ge-field-error">{errors.nameOnCard}</span>
-                    )}
-                  </div>
-                  <div className="ge-field">
-                    <label className="ge-label">Card number</label>
-                    <input
-                      type="text"
-                      name="cardNumber"
-                      className={`ge-form-control ${
-                        errors.cardNumber ? "is-invalid" : ""
-                      }`}
-                      placeholder="Card number"
-                      value={form.cardNumber}
-                      onChange={handleChange}
-                    />
-                    {errors.cardNumber && (
-                      <span className="ge-field-error">{errors.cardNumber}</span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="ge-form-row">
-                  <div className="ge-field">
-                    <label className="ge-label">Expiry date</label>
-                    <input
-                      type="text"
-                      name="expiryDate"
-                      className={`ge-form-control ${
-                        errors.expiryDate ? "is-invalid" : ""
-                      }`}
-                      placeholder="MM / YY"
-                      value={form.expiryDate}
-                      onChange={handleChange}
-                    />
-                    {errors.expiryDate && (
-                      <span className="ge-field-error">{errors.expiryDate}</span>
-                    )}
-                  </div>
-                  <div className="ge-field">
-                    <label className="ge-label">CVC</label>
-                    <input
-                      type="text"
-                      name="cvc"
-                      className={`ge-form-control ${
-                        errors.cvc ? "is-invalid" : ""
-                      }`}
-                      placeholder="CVC"
-                      value={form.cvc}
-                      onChange={handleChange}
-                    />
-                    {errors.cvc && (
-                      <span className="ge-field-error">{errors.cvc}</span>
-                    )}
-                  </div>
-                </div>
-              </div>
+            {!currentUser && (
+              <p>
+                Please{" "}
+                <Link to="/login" className="ge-link-gold">
+                  sign in
+                </Link>{" "}
+                to continue.
+              </p>
             )}
 
-            <button type="submit" className="ge-btn-gold ge-checkout-btn">
-              Complete Purchase
-            </button>
+            {currentUser && items.length === 0 && (
+              <p>Your cart is empty. Add some products before checking out.</p>
+            )}
+
+            {currentUser && items.length > 0 && (
+              <>
+                <p>
+                  Click below to pay securely with Razorpay. You can choose
+                  Card, UPI, Netbanking or Wallet in the payment window that
+                  opens.
+                </p>
+
+                {error && <p className="ge-field-error">{error}</p>}
+
+                <button
+                  type="button"
+                  className="ge-btn-gold ge-checkout-btn"
+                  onClick={handlePayNow}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Processing..." : `Pay ₹ ${totalPrice}`}
+                </button>
+              </>
+            )}
 
             <Link to="/checkout/shipping" className="ge-back-link">
               Back to Shipping
             </Link>
-          </form>
+          </div>
 
           <aside className="ge-order-summary">
             <div className="ge-order-summary-head">
@@ -215,35 +173,25 @@ const Payment = () => {
             </div>
 
             <ul className="ge-order-items">
-              {ORDER_ITEMS.map((item) => (
-                <li key={item.id}>
-                  <img src={item.image} alt={item.name} />
+              {items.map((item) => (
+                <li key={item._id}>
+                  <img src={item.product.image} alt={item.product.name} />
                   <div className="ge-order-item-info">
-                    <h4>{item.name}</h4>
-                    <span>{item.variant}</span>
-                    <span>Quantity {item.qty}</span>
+                    <h4>{item.product.name}</h4>
+                    <span>Quantity {item.quantity}</span>
                   </div>
-                  <span className="ge-order-item-price">{item.price}</span>
+                  <span className="ge-order-item-price">
+                    ₹ {item.product.price * item.quantity}
+                  </span>
                 </li>
               ))}
             </ul>
 
             <div className="ge-order-divider"></div>
 
-            <div className="ge-order-row">
-              <span>Subtotal</span>
-              <span>₹ 1,448</span>
-            </div>
-            <div className="ge-order-row">
-              <span>Shipping</span>
-              <span>₹ 150</span>
-            </div>
-
-            <div className="ge-order-divider"></div>
-
             <div className="ge-order-row ge-order-total">
               <span>Total</span>
-              <span>₹ 1,598</span>
+              <span>₹ {totalPrice}</span>
             </div>
           </aside>
         </div>

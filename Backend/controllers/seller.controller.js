@@ -1,5 +1,6 @@
 import Seller from "../models/seller.model.js";
 import Product from "../models/product.model.js";
+import Order from "../models/order.model.js";
 import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
@@ -89,6 +90,51 @@ export const sellerProfile = async (req, res) => {
         }
 
         return res.status(200).json({ success: true, seller });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+// get logged-in seller's own dashboard numbers
+// (how many products they have listed, and how much they've earned so far)
+// api/seller/dashboard
+export const sellerDashboardStats = async (req, res) => {
+    try {
+        const sellerId = req.user.id;
+
+        // How many products this seller has listed
+        const totalProducts = await Product.countDocuments({ seller: sellerId });
+
+        // Get just the ids of this seller's products, so we can check
+        // which order items belong to them
+        const myProducts = await Product.find({ seller: sellerId }).select('_id');
+        const myProductIds = myProducts.map((product) => product._id.toString());
+
+        // Only count orders that were actually paid for
+        const paidOrders = await Order.find({ paymentStatus: "Paid" });
+
+        let totalRevenue = 0;
+        let totalItemsSold = 0;
+
+        // go through every order, and every item inside that order,
+        // and add up only the ones that belong to this seller
+        paidOrders.forEach((order) => {
+            order.items.forEach((item) => {
+                if (myProductIds.includes(item.product.toString())) {
+                    totalRevenue += item.price * item.quantity;
+                    totalItemsSold += item.quantity;
+                }
+            });
+        });
+
+        return res.status(200).json({
+            success: true,
+            dashboard: {
+                totalProducts,
+                totalRevenue,
+                totalItemsSold
+            }
+        });
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
     }

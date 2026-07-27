@@ -6,7 +6,7 @@ import { fetchCategories } from "../../features/catalog/catalogSlicer";
 import { addToWishlist } from "../../features/wishlist/wishlistSlicer";
 import "./Shop.css";
 
-const PRODUCTS_PER_PAGE = 4;
+const PRODUCTS_PER_PAGE = 20;
 
 // renders 5 stars, filling however many the rating rounds to
 const renderStars = (rating) => {

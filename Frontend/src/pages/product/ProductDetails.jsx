@@ -34,8 +34,8 @@ const ProductDetails = () => {
   const { currentUser } = useSelector((state) => state.users);
   const {
     currentProduct: product,
-    isLoading,
-    error: productError,
+    isLoadingCurrent: isLoading,
+    currentError: productError,
   } = useSelector((state) => state.product);
   const { items: reviews, isLoading: reviewsLoading, error: reviewError } =
     useSelector((state) => state.reviews);

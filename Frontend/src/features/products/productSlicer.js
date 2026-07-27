@@ -21,10 +21,11 @@ export const fetchAllProducts = createAsyncThunk(
     "product/fetchAllProducts",
     async (_, { rejectWithValue }) => {
         try {
-            // limit=100 so we get everything back in one go - the Shop page
-            // already does its own filtering/sorting/pagination on whatever
-            // list it gets, so there's no need for the backend to paginate too
-            const res = await fetchWithTimeout(`${BASE_URL}/get-all-products?limit=100`);
+            // limit=500 so we get everything back in one go - the Shop page
+            // (and the Home page's per-category rows) already do their own
+            // filtering/sorting/pagination on whatever list they get, so
+            // there's no need for the backend to paginate too
+            const res = await fetchWithTimeout(`${BASE_URL}/get-all-products?limit=500`);
 
             const data = await res.json();
 
@@ -69,9 +70,20 @@ const product = createSlice({
     name: "product",
     initialState: {
         products: [],
-        currentProduct: null,
+        // list loading/error (fetchAllProducts) - used by Home/Shop/RelatedProducts
         isLoading: false,
         error: null,
+
+        // single-product loading/error (fetchProductById) - kept SEPARATE from
+        // the list's isLoading/error above. They used to share the same fields,
+        // which meant RelatedProducts' own fetchAllProducts call (fired after
+        // the product page finishes loading) would flip the shared isLoading
+        // back to true, make ProductDetails re-show "Loading product...",
+        // which unmounted RelatedProducts, which then remounted and fired
+        // fetchAllProducts again - an endless loading loop.
+        currentProduct: null,
+        isLoadingCurrent: false,
+        currentError: null,
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -89,17 +101,17 @@ const product = createSlice({
                 state.error = action.payload;
             })
             .addCase(fetchProductById.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
+                state.isLoadingCurrent = true;
+                state.currentError = null;
                 state.currentProduct = null;
             })
             .addCase(fetchProductById.fulfilled, (state, action) => {
-                state.isLoading = false;
+                state.isLoadingCurrent = false;
                 state.currentProduct = action.payload;
             })
             .addCase(fetchProductById.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.payload;
+                state.isLoadingCurrent = false;
+                state.currentError = action.payload;
             });
     },
 });

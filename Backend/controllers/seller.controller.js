@@ -35,7 +35,7 @@ export const registerSeller = async (req, res) => {
         const sellerObj = seller.toObject();
         delete sellerObj.password;
 
-        return res.status(200).json({ success: true, message: "Seller registered successfully. Waiting for admin approval.", seller: sellerObj });
+        return res.status(200).json({ success: true, message: "Seller registered successfully. You can now log in.", seller: sellerObj });
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
     }

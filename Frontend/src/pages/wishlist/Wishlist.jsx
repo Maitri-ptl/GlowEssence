@@ -5,6 +5,7 @@ import {
   fetchWishlist,
   removeWishlistItem,
 } from "../../features/wishlist/wishlistSlicer";
+import { addToCart, fetchCart } from "../../features/cart/cartSlicer";
 import "./Wishlist.css";
 
 const Wishlist = () => {
@@ -20,6 +21,18 @@ const Wishlist = () => {
 
   const handleRemove = (item) => {
     dispatch(removeWishlistItem(item._id));
+  };
+
+  const handleAddToCart = async (item) => {
+    try {
+      await dispatch(
+        addToCart({ productId: item.product._id, quantity: 1 })
+      ).unwrap();
+      dispatch(fetchCart()); // refresh the cart count shown in the navbar
+      alert("Added to cart!");
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
@@ -75,7 +88,11 @@ const Wishlist = () => {
                     </span>
                   </div>
 
-                  <button type="button" className="ge-btn-gold ge-wishlist-add-btn">
+                  <button
+                    type="button"
+                    className="ge-btn-gold ge-wishlist-add-btn"
+                    onClick={() => handleAddToCart(item)}
+                  >
                     Add to Cart
                   </button>
                 </div>

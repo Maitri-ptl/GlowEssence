@@ -5,7 +5,6 @@ import {
   updateUserByAdmin,
   deleteUserByAdmin,
   fetchAllSellers,
-  updateSellerStatusByAdmin,
   deleteSellerByAdmin,
   fetchDashboardSummary,
   fetchMonthlyRevenue,
@@ -79,10 +78,6 @@ const AdminDashboard = () => {
     if (confirmed) {
       dispatch(deleteUserByAdmin(id));
     }
-  };
-
-  const handleSellerStatus = (id, status) => {
-    dispatch(updateSellerStatusByAdmin({ id, status }));
   };
 
   const handleDeleteSeller = (id) => {
@@ -370,7 +365,6 @@ const AdminDashboard = () => {
                     <th>Email</th>
                     <th>Business</th>
                     <th>GSTIN</th>
-                    <th>Status</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -381,30 +375,7 @@ const AdminDashboard = () => {
                       <td>{seller.email}</td>
                       <td>{seller.businessName || "—"}</td>
                       <td>{seller.gstin}</td>
-                      <td>
-                        <span
-                          className={`ge-admin-status ge-admin-status-${seller.status}`}
-                        >
-                          {seller.status}
-                        </span>
-                      </td>
                       <td className="ge-admin-actions">
-                        {seller.status !== "approved" && (
-                          <button
-                            type="button"
-                            onClick={() => handleSellerStatus(seller._id, "approved")}
-                          >
-                            <i className="bi bi-check-circle"></i> Approve
-                          </button>
-                        )}
-                        {seller.status !== "rejected" && (
-                          <button
-                            type="button"
-                            onClick={() => handleSellerStatus(seller._id, "rejected")}
-                          >
-                            <i className="bi bi-x-circle"></i> Reject
-                          </button>
-                        )}
                         <button
                           type="button"
                           className="ge-admin-delete"

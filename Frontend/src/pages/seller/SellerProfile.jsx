@@ -32,10 +32,8 @@ const SellerProfile = () => {
           </div>
           <div>
             <h1>{profile?.name || currentSeller?.name}</h1>
-            <span
-              className={`ge-seller-status ge-seller-status-${profile?.status || "pending"}`}
-            >
-              {profile?.status || "pending"} approval
+            <span className="ge-seller-status ge-seller-status-approved">
+              Active Seller
             </span>
           </div>
         </div>

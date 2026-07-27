@@ -139,6 +139,16 @@ const Home = () => {
 
       {/* ---------- Hero ---------- */}
       <section className="ge-hero">
+        <video
+          className="ge-hero-video"
+          src="/hero-video.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+        ></video>
+        <div className="ge-hero-overlay"></div>
+
         <span className="ge-hero-orb ge-hero-orb-1"></span>
         <span className="ge-hero-orb ge-hero-orb-2"></span>
 

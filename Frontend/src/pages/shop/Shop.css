@@ -288,28 +288,34 @@
 .ge-shop-card {
   display: block;
   color: inherit;
-  transition: transform var(--ge-transition);
+  background: var(--ge-white);
+  border: 1px solid #f0e6de;
+  border-radius: 18px;
+  padding: 0.9rem;
+  box-shadow: 0 6px 18px rgba(58, 50, 48, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .ge-shop-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 36px rgba(58, 50, 48, 0.14);
+  border-color: var(--ge-gold-soft);
 }
 
 .ge-shop-card-media {
   position: relative;
-  background: var(--ge-cream-deep);
-  border-radius: 16px;
+  background: linear-gradient(160deg, var(--ge-cream-deep) 0%, var(--ge-blush-soft) 100%);
+  border-radius: 14px;
   overflow: hidden;
   aspect-ratio: 1 / 1;
-  margin-bottom: 0.9rem;
-  box-shadow: var(--ge-shadow);
+  margin-bottom: 1rem;
 }
 
 .ge-shop-card-media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--ge-transition);
+  transition: transform 0.5s ease;
 }
 
 .ge-shop-card:hover .ge-shop-card-media img {
@@ -351,15 +357,21 @@
 }
 
 .ge-shop-card h3 {
-  font-size: 0.95rem;
-  margin: 0 0 0.3rem;
+  font-size: 0.98rem;
+  margin: 0 0 0.35rem;
+  padding: 0 0.15rem;
+}
+
+.ge-shop-card .ge-shop-rating {
+  padding: 0 0.15rem;
 }
 
 .ge-shop-price {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
+  padding: 0 0.15rem;
 }
 
 .ge-price-new {

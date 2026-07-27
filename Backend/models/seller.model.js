@@ -52,11 +52,12 @@ const sellerSchema = new mongoose.Schema(
             default: "seller",
         },
 
-        // admin can approve/reject a seller before they can sell
+        // sellers are active as soon as they register - no admin approval
+        // step is required
         status: {
             type: String,
             enum: ["pending", "approved", "rejected"],
-            default: "pending",
+            default: "approved",
         },
 
         isActive: {

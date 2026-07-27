@@ -60,22 +60,43 @@
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 3rem;
+  justify-content: center;
+  text-align: center;
   width: 100%;
   margin: 0 auto;
-  padding: 5rem 4rem;
-  min-height: 68vh;
+  padding: 6rem 2rem;
+  min-height: 88vh;
   overflow: hidden;
-  background-image: linear-gradient(
-      120deg,
-      rgba(20, 15, 10, 0.62) 0%,
-      rgba(20, 15, 10, 0.4) 45%,
-      rgba(20, 15, 10, 0.25) 100%
-    ),
-    url("../../assets/Home-Bg.jpg");
+  /* shows instantly while the video loads, and stays as the background
+     for browsers/devices where the video fails to play */
+  background-image: url("../../assets/Home-Bg.jpg");
   background-size: cover;
   background-position: center;
+}
+
+/* full-bleed background video, same idea as the Rolex homepage -
+   sits behind everything else in the hero */
+.ge-hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* dark gradient over the video so the white hero text stays readable,
+   same tone as the old image overlay */
+.ge-hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: linear-gradient(
+    120deg,
+    rgba(20, 15, 10, 0.62) 0%,
+    rgba(20, 15, 10, 0.4) 45%,
+    rgba(20, 15, 10, 0.25) 100%
+  );
 }
 
 /* soft glowing blobs floating behind the hero content, purely decorative */
@@ -106,7 +127,10 @@
 .ge-hero-text {
   position: relative;
   z-index: 1;
-  max-width: 560px;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .ge-hero-text .ge-eyebrow {
@@ -119,8 +143,9 @@
 }
 
 .ge-hero-text h1 {
-  font-size: 3.6rem;
-  line-height: 1.15;
+  font-size: 3rem;
+  white-space: nowrap;
+  line-height: 1.12;
   margin: 1.1rem 0 1.4rem;
   /* modern gradient-text treatment, with a solid white fallback for
      browsers that don't support background-clip: text */
@@ -141,15 +166,16 @@
 
 .ge-hero-text p {
   color: #f1ece6;
-  font-size: 1.08rem;
-  max-width: 460px;
+  font-size: 1.15rem;
+  max-width: 520px;
   line-height: 1.75;
-  margin-bottom: 2.2rem;
+  margin: 0 auto 2.2rem;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
 }
 
 .ge-hero-actions {
   display: flex;
+  justify-content: center;
   gap: 1rem;
   margin-bottom: 2.4rem;
 }
@@ -194,6 +220,7 @@
 .ge-hero-perks {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 1.6rem;
   padding-top: 1.6rem;
   border-top: 1px solid rgba(255, 255, 255, 0.25);
@@ -314,23 +341,28 @@
 .ge-home-card {
   display: block;
   color: inherit;
-  transition: transform var(--ge-transition);
+  background: var(--ge-white);
+  border: 1px solid #f0e6de;
+  border-radius: 20px;
+  padding: 0.85rem;
+  box-shadow: 0 6px 18px rgba(58, 50, 48, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .ge-home-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 36px rgba(58, 50, 48, 0.14);
+  border-color: var(--ge-gold-soft);
 }
 
 /* product sits framed on a soft tinted backdrop, instead of a big flat photo */
 .ge-home-card-media {
   position: relative;
   background: linear-gradient(160deg, var(--ge-blush-soft) 0%, var(--ge-cream-deep) 100%);
-  border-radius: 20px;
+  border-radius: 14px;
   overflow: hidden;
   aspect-ratio: 4 / 5;
   margin-bottom: 0.85rem;
-  box-shadow: 0 10px 24px rgba(58, 50, 48, 0.1);
-  transition: box-shadow var(--ge-transition);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -351,10 +383,6 @@
 
 .ge-home-card:hover .ge-home-card-media img {
   transform: scale(1.06);
-}
-
-.ge-home-card:hover .ge-home-card-media {
-  box-shadow: 0 16px 32px rgba(184, 147, 95, 0.25);
 }
 
 .ge-home-badge {
@@ -398,12 +426,14 @@
 .ge-home-card h3 {
   font-size: 0.92rem;
   margin: 0 0 0.35rem;
+  padding: 0 0.15rem;
 }
 
 .ge-home-rating {
   color: var(--ge-gold);
   font-size: 0.8rem;
   margin-bottom: 0.5rem;
+  padding: 0 0.15rem;
 }
 
 .ge-home-price {
@@ -411,6 +441,7 @@
   align-items: center;
   gap: 0.6rem;
   font-size: 0.98rem;
+  padding: 0 0.15rem;
 }
 
 .ge-home-price .ge-price-new {
@@ -626,10 +657,12 @@
 @media (max-width: 1024px) {
   .ge-hero {
     padding: 4rem 2.5rem;
+    min-height: 75vh;
   }
 
   .ge-hero-text h1 {
-    font-size: 2.9rem;
+    font-size: 2.4rem;
+    white-space: normal;
   }
 }
 

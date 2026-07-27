@@ -141,3 +141,40 @@ button {
   opacity: 0.75;
   color: var(--ge-gold);
 }
+
+/* ================= Shared page animations ================= */
+/* same fade-up used on the homepage hero, reused site-wide so every
+   page gets a little entrance motion without repeating keyframes */
+
+@keyframes ge-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ge-fade-in {
+  opacity: 0;
+  animation: ge-fade-up 0.7s ease forwards;
+}
+
+.ge-delay-1 { animation-delay: 0.05s; }
+.ge-delay-2 { animation-delay: 0.15s; }
+.ge-delay-3 { animation-delay: 0.25s; }
+.ge-delay-4 { animation-delay: 0.35s; }
+.ge-delay-5 { animation-delay: 0.45s; }
+
+/* gentle lift + shadow on hover, for any card (product cards, dashboard
+   cards, etc.) - just add this class alongside the card's own class */
+.ge-hover-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ge-hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(58, 50, 48, 0.14);
+}

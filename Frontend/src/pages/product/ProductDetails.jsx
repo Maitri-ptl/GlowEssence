@@ -56,7 +56,16 @@ const ProductDetails = () => {
     return <p style={{ textAlign: "center", margin: "80px" }}>Loading product...</p>;
   }
 
-  if (productError || !product) {
+  if (productError) {
+    return (
+      <NotFound
+        title="Something Went Wrong"
+        text={productError}
+      />
+    );
+  }
+
+  if (!product) {
     return (
       <NotFound
         title="Product Not Found"

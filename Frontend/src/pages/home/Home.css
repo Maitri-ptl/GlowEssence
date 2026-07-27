@@ -122,8 +122,21 @@
   font-size: 3.6rem;
   line-height: 1.15;
   margin: 1.1rem 0 1.4rem;
+  /* modern gradient-text treatment, with a solid white fallback for
+     browsers that don't support background-clip: text */
   color: #fff;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(100deg, #ffffff 20%, var(--ge-gold-soft) 60%, #ffffff 85%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+}
+
+@supports not (background-clip: text) {
+  .ge-hero-text h1 {
+    -webkit-text-fill-color: unset;
+    color: #fff;
+  }
 }
 
 .ge-hero-text p {
@@ -208,9 +221,13 @@
   margin: -2.5rem auto 0;
   position: relative;
   z-index: 2;
-  background: var(--ge-white);
-  border-radius: 20px;
-  box-shadow: var(--ge-shadow);
+  /* modern frosted-glass look instead of a flat solid card */
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+  box-shadow: 0 20px 45px rgba(58, 50, 48, 0.12);
   padding: 2.2rem 1rem;
 }
 
@@ -261,6 +278,10 @@
 .ge-home-section-head h2 {
   font-size: 2.8rem;
   margin: 0.7rem 0 1.1rem;
+  background: linear-gradient(100deg, var(--ge-charcoal) 30%, var(--ge-gold) 70%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .ge-home-divider {
@@ -304,11 +325,12 @@
 .ge-home-card-media {
   position: relative;
   background: linear-gradient(160deg, var(--ge-blush-soft) 0%, var(--ge-cream-deep) 100%);
-  border-radius: 14px;
+  border-radius: 20px;
   overflow: hidden;
   aspect-ratio: 4 / 5;
   margin-bottom: 0.85rem;
   box-shadow: 0 10px 24px rgba(58, 50, 48, 0.1);
+  transition: box-shadow var(--ge-transition);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -329,6 +351,10 @@
 
 .ge-home-card:hover .ge-home-card-media img {
   transform: scale(1.06);
+}
+
+.ge-home-card:hover .ge-home-card-media {
+  box-shadow: 0 16px 32px rgba(184, 147, 95, 0.25);
 }
 
 .ge-home-badge {
@@ -504,11 +530,15 @@
 
 .ge-testimonial-card {
   background: var(--ge-white);
-  border-radius: 18px;
+  border-radius: 22px;
   padding: 2rem;
   box-shadow: var(--ge-shadow);
   text-align: center;
-  transition: transform var(--ge-transition);
+  transition: transform var(--ge-transition), box-shadow var(--ge-transition);
+}
+
+.ge-testimonial-card:hover {
+  box-shadow: 0 18px 36px rgba(58, 50, 48, 0.14);
 }
 
 .ge-testimonial-card:hover {

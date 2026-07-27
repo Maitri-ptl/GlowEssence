@@ -21,6 +21,7 @@ import Shop from "../pages/shop/Shop";
 import About from "../pages/about/About";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import SellerDashboard from "../pages/seller/SellerDashboard";
+import SellerProfile from "../pages/seller/SellerProfile";
 import NotFound from "../pages/error/NotFound";
 
 const AppRoutes = () => {
@@ -52,6 +53,7 @@ const AppRoutes = () => {
 
         <Route element={<SellerRoute />}>
           <Route path="/seller/dashboard" element={<SellerDashboard />} />
+          <Route path="/seller/profile" element={<SellerProfile />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

@@ -53,22 +53,42 @@
 .ge-wishlist-item {
   display: flex;
   flex-direction: column;
+  background: var(--ge-white);
+  border-radius: 18px;
+  padding: 1rem;
+  box-shadow: var(--ge-shadow);
+  transition: transform var(--ge-transition), box-shadow var(--ge-transition);
 }
 
+.ge-wishlist-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 32px rgba(58, 50, 48, 0.14);
+}
+
+/* product sits framed on a soft tinted backdrop, not a big flat photo */
 .ge-wishlist-item-media {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  border-radius: 16px;
+  border-radius: 14px;
   overflow: hidden;
-  background: var(--ge-cream-deep);
+  background: linear-gradient(160deg, var(--ge-blush-soft) 0%, var(--ge-cream-deep) 100%);
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
 }
 
 .ge-wishlist-item-media img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+}
+
+.ge-wishlist-item:hover .ge-wishlist-item-media img {
+  transform: scale(1.05);
 }
 
 .ge-wishlist-remove {

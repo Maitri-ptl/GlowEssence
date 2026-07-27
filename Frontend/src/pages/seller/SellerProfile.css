@@ -1,0 +1,87 @@
+.ge-seller-profile-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 4rem;
+}
+
+.ge-seller-profile-card {
+  background: var(--ge-white);
+  border-radius: var(--ge-radius);
+  box-shadow: var(--ge-shadow);
+  padding: 2.2rem;
+}
+
+.ge-seller-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #f0e6df;
+}
+
+.ge-seller-profile-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--ge-gold);
+  color: var(--ge-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.ge-seller-profile-header h1 {
+  font-size: 1.5rem;
+  margin: 0 0 0.4rem;
+}
+
+.ge-seller-status {
+  display: inline-block;
+  text-transform: capitalize;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+}
+
+.ge-seller-status-pending {
+  background: rgba(216, 193, 154, 0.3);
+  color: #8a6d1d;
+}
+
+.ge-seller-status-approved {
+  background: rgba(143, 174, 130, 0.2);
+  color: #4c7a3f;
+}
+
+.ge-seller-status-rejected {
+  background: rgba(192, 57, 43, 0.12);
+  color: #c0392b;
+}
+
+.ge-seller-profile-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4rem;
+  margin-bottom: 2rem;
+}
+
+.ge-seller-profile-row.full {
+  grid-column: 1 / -1;
+}
+
+.ge-seller-profile-row p {
+  margin: 0.3rem 0 0;
+  color: var(--ge-charcoal);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 560px) {
+  .ge-seller-profile-details {
+    grid-template-columns: 1fr;
+  }
+}

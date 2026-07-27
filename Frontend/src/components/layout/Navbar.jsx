@@ -67,11 +67,14 @@ const Navbar = () => {
           <button className="ge-icon-btn" aria-label="Search">
             <i className="bi bi-search"></i>
           </button>
-          {!isSeller && (
-            <Link to="/profile" className="ge-icon-btn" aria-label="Account">
-              <i className="bi bi-person"></i>
-            </Link>
-          )}
+          {/* sellers get their own profile page (with their own Logout button) */}
+          <Link
+            to={isSeller ? "/seller/profile" : "/profile"}
+            className="ge-icon-btn"
+            aria-label="Account"
+          >
+            <i className="bi bi-person"></i>
+          </Link>
           <Link to="/wishlist" className="ge-icon-btn" aria-label="Wishlist">
             <i className="bi bi-heart"></i>
           </Link>

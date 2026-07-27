@@ -52,6 +52,34 @@ export const loginSeller = createAsyncThunk(
     }
 );
 
+// Get the logged-in seller's full details (name, email, business info, ...)
+// Login only gives us { id, name }, so this fetches everything else.
+export const fetchSellerProfileDetails = createAsyncThunk(
+    "seller/fetchSellerProfileDetails",
+    async (sellerId, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().seller.token;
+
+            const res = await fetch(`${BASE_URL}/profile/${sellerId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return rejectWithValue(data.message || "Failed to load profile");
+            }
+
+            return data.seller;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 const storedSeller = localStorage.getItem("geSeller");
 const storedSellerToken = localStorage.getItem("geSellerToken");
 
@@ -60,6 +88,8 @@ const seller = createSlice({
     initialState: {
         currentSeller: storedSeller ? JSON.parse(storedSeller) : null,
         token: storedSellerToken || null,
+        // full profile details (email, business name, gstin, ...), filled in by fetchSellerProfileDetails
+        profile: null,
         isLoading: false,
         error: null,
         message: null,
@@ -68,6 +98,7 @@ const seller = createSlice({
         logoutSeller: (state) => {
             state.currentSeller = null;
             state.token = null;
+            state.profile = null;
             localStorage.removeItem("geSeller");
             localStorage.removeItem("geSellerToken");
         },
@@ -112,6 +143,10 @@ const seller = createSlice({
             .addCase(loginSeller.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
+            })
+            // Fetch full profile
+            .addCase(fetchSellerProfileDetails.fulfilled, (state, action) => {
+                state.profile = action.payload;
             });
     },
 });

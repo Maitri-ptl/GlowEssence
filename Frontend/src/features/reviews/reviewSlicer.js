@@ -7,6 +7,19 @@ const authHeaders = (token) => ({
     Authorization: `Bearer ${token}`,
 });
 
+// A normal fetch(), but it gives up after a few seconds instead of
+// hanging forever if the backend/database is slow or unreachable.
+const fetchWithTimeout = async (url, options = {}, timeoutMs = 8000) => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+        return await fetch(url, { ...options, signal: controller.signal });
+    } finally {
+        clearTimeout(timeoutId);
+    }
+};
+
 // Get all reviews for one product
 export const fetchReviews = createAsyncThunk(
     "reviews/fetchReviews",
@@ -14,7 +27,7 @@ export const fetchReviews = createAsyncThunk(
         try {
             const token = getState().users.token;
 
-            const res = await fetch(`${BASE_URL}/all-reviews/${productId}`, {
+            const res = await fetchWithTimeout(`${BASE_URL}/all-reviews/${productId}`, {
                 headers: authHeaders(token),
             });
 
@@ -26,6 +39,9 @@ export const fetchReviews = createAsyncThunk(
 
             return data.reviews;
         } catch (error) {
+            if (error.name === "AbortError") {
+                return rejectWithValue("This is taking too long. Please check your connection and try again.");
+            }
             return rejectWithValue(error.message);
         }
     }
@@ -38,7 +54,7 @@ export const addReview = createAsyncThunk(
         try {
             const token = getState().users.token;
 
-            const res = await fetch(`${BASE_URL}/add-review`, {
+            const res = await fetchWithTimeout(`${BASE_URL}/add-review`, {
                 method: "POST",
                 headers: authHeaders(token),
                 body: JSON.stringify({ productId, rating, comment }),
@@ -52,6 +68,9 @@ export const addReview = createAsyncThunk(
 
             return data.review;
         } catch (error) {
+            if (error.name === "AbortError") {
+                return rejectWithValue("This is taking too long. Please check your connection and try again.");
+            }
             return rejectWithValue(error.message);
         }
     }

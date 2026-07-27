@@ -4,6 +4,9 @@ import {
   fetchAllUsers,
   updateUserByAdmin,
   deleteUserByAdmin,
+  fetchAllSellers,
+  updateSellerStatusByAdmin,
+  deleteSellerByAdmin,
   fetchDashboardSummary,
   fetchMonthlyRevenue,
   fetchTopProducts,
@@ -21,6 +24,7 @@ const AdminDashboard = () => {
   const { currentUser } = useSelector((state) => state.users);
   const {
     users,
+    sellers,
     summary,
     monthlyRevenue,
     topProducts,
@@ -41,6 +45,7 @@ const AdminDashboard = () => {
     dispatch(fetchTopProducts());
     dispatch(fetchRecentOrders());
     dispatch(fetchAllUsers());
+    dispatch(fetchAllSellers());
   }, [dispatch]);
 
   // the admin should never see/edit/delete their own account in this table
@@ -76,6 +81,20 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleSellerStatus = (id, status) => {
+    dispatch(updateSellerStatusByAdmin({ id, status }));
+  };
+
+  const handleDeleteSeller = (id) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this seller? This cannot be undone."
+    );
+
+    if (confirmed) {
+      dispatch(deleteSellerByAdmin(id));
+    }
+  };
+
   // highest revenue value, used so every bar's height is relative to it
   const maxRevenue = Math.max(1, ...monthlyRevenue.map((entry) => entry.revenue));
   const maxSold = Math.max(1, ...topProducts.map((entry) => entry.totalSold));
@@ -101,6 +120,13 @@ const AdminDashboard = () => {
           onClick={() => setActiveTab("users")}
         >
           Manage Users
+        </button>
+        <button
+          type="button"
+          className={activeTab === "sellers" ? "active" : ""}
+          onClick={() => setActiveTab("sellers")}
+        >
+          Manage Sellers
         </button>
       </div>
 
@@ -321,6 +347,72 @@ const AdminDashboard = () => {
                           </td>
                         </>
                       )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
+      )}
+      {activeTab === "sellers" && (
+        <>
+          {isLoading && <p>Loading sellers...</p>}
+
+          {!isLoading && sellers.length === 0 && <p>No sellers found.</p>}
+
+          {!isLoading && sellers.length > 0 && (
+            <div className="ge-admin-table-wrap">
+              <table className="ge-admin-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Business</th>
+                    <th>GSTIN</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sellers.map((seller) => (
+                    <tr key={seller._id}>
+                      <td>{seller.name}</td>
+                      <td>{seller.email}</td>
+                      <td>{seller.businessName || "—"}</td>
+                      <td>{seller.gstin}</td>
+                      <td>
+                        <span
+                          className={`ge-admin-status ge-admin-status-${seller.status}`}
+                        >
+                          {seller.status}
+                        </span>
+                      </td>
+                      <td className="ge-admin-actions">
+                        {seller.status !== "approved" && (
+                          <button
+                            type="button"
+                            onClick={() => handleSellerStatus(seller._id, "approved")}
+                          >
+                            <i className="bi bi-check-circle"></i> Approve
+                          </button>
+                        )}
+                        {seller.status !== "rejected" && (
+                          <button
+                            type="button"
+                            onClick={() => handleSellerStatus(seller._id, "rejected")}
+                          >
+                            <i className="bi bi-x-circle"></i> Reject
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          className="ge-admin-delete"
+                          onClick={() => handleDeleteSeller(seller._id)}
+                        >
+                          <i className="bi bi-trash"></i> Delete
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

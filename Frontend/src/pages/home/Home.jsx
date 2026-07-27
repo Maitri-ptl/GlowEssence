@@ -110,6 +110,7 @@ const WaveDivider = ({ flip }) => (
 const Home = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.users);
+  const { currentSeller } = useSelector((state) => state.seller);
   const { products } = useSelector((state) => state.product);
 
   useEffect(() => {
@@ -158,8 +159,9 @@ const Home = () => {
               Shop the Collection
             </Link>
 
-            {/* only show "Sign In" to a visitor who hasn't logged in yet */}
-            {!currentUser && (
+            {/* only show "Sign In" to a visitor who hasn't logged in yet
+                (neither as a regular user nor as a seller) */}
+            {!currentUser && !currentSeller && (
               <Link to="/login" className="ge-btn-outline ge-btn-outline-light">
                 Sign In
               </Link>

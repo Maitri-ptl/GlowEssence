@@ -25,6 +25,10 @@ export const verifytoken = (req, res, next) => {
             if (error.name == 'TokenExpiredError') {
                 return res.status(400).json({ success: false, message: "Please login again." })
             }
+
+            // any other jwt error (invalid signature, malformed token, etc.)
+            // must also respond, otherwise the request just hangs forever
+            return res.status(400).json({ success: false, message: "Invalid Token." })
         }
 
     } catch (error) {

@@ -82,6 +82,81 @@ export const deleteUserByAdmin = createAsyncThunk(
     }
 );
 
+// Get every registered seller (admin only)
+export const fetchAllSellers = createAsyncThunk(
+    "admin/fetchAllSellers",
+    async (_, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().users.token;
+
+            const res = await fetch(`${BASE_URL}/sellers`, {
+                headers: authHeaders(token),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return rejectWithValue(data.message || "Failed to load sellers");
+            }
+
+            return data.sellers;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+// Approve / reject a seller (admin only)
+export const updateSellerStatusByAdmin = createAsyncThunk(
+    "admin/updateSellerStatusByAdmin",
+    async ({ id, status }, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().users.token;
+
+            const res = await fetch(`${BASE_URL}/sellers/${id}/status`, {
+                method: "PATCH",
+                headers: authHeaders(token),
+                body: JSON.stringify({ status }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return rejectWithValue(data.message || "Failed to update seller status");
+            }
+
+            return data.seller;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+// Delete any seller (admin only)
+export const deleteSellerByAdmin = createAsyncThunk(
+    "admin/deleteSellerByAdmin",
+    async (id, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().users.token;
+
+            const res = await fetch(`${BASE_URL}/sellers/${id}`, {
+                method: "DELETE",
+                headers: authHeaders(token),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return rejectWithValue(data.message || "Failed to delete seller");
+            }
+
+            return id;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Dashboard summary numbers (total users, sellers, products, orders, revenue)
 export const fetchDashboardSummary = createAsyncThunk(
     "admin/fetchDashboardSummary",
@@ -182,6 +257,7 @@ const admin = createSlice({
     name: "admin",
     initialState: {
         users: [],
+        sellers: [],
         summary: null,
         monthlyRevenue: [],
         topProducts: [],
@@ -227,6 +303,37 @@ const admin = createSlice({
                 state.message = "User deleted.";
             })
             .addCase(deleteUserByAdmin.rejected, (state, action) => {
+                state.error = action.payload;
+            })
+            .addCase(fetchAllSellers.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(fetchAllSellers.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.sellers = action.payload;
+            })
+            .addCase(fetchAllSellers.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
+            .addCase(updateSellerStatusByAdmin.fulfilled, (state, action) => {
+                const index = state.sellers.findIndex(
+                    (seller) => seller._id === action.payload._id
+                );
+                if (index !== -1) {
+                    state.sellers[index] = action.payload;
+                }
+                state.message = `Seller ${action.payload.status}.`;
+            })
+            .addCase(updateSellerStatusByAdmin.rejected, (state, action) => {
+                state.error = action.payload;
+            })
+            .addCase(deleteSellerByAdmin.fulfilled, (state, action) => {
+                state.sellers = state.sellers.filter((seller) => seller._id !== action.payload);
+                state.message = "Seller deleted.";
+            })
+            .addCase(deleteSellerByAdmin.rejected, (state, action) => {
                 state.error = action.payload;
             })
             .addCase(fetchDashboardSummary.fulfilled, (state, action) => {

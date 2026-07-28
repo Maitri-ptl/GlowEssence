@@ -13,7 +13,7 @@ import orderRouter from "./order.route.js";
 
 const router = Router();
 
-router.use('/user', userRouter);
+router.use('/users', userRouter);
 router.use('/admin', adminRouter);
 router.use('/seller', sellerRouter);
 // admin-only checks now live on the individual write routes inside

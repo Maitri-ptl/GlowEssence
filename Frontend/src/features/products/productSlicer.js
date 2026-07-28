@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const BASE_URL =
     import.meta.env.MODE === "development"
         ? "/api/product"
-        : "https://glowessence-backend-rbw1.onrender.com/api/product";
+        : "https://glowessence-backend-rbwl.onrender.com/api/product";
 
 // A normal fetch(), but it gives up after a few seconds instead of
 // hanging forever if the backend/database is slow or unreachable.

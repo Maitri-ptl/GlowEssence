@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import CheckoutSteps from "../../components/layout/checkout/CheckoutSteps";
@@ -78,7 +78,7 @@ const Payment = () => {
 
             // Step 4: payment confirmed, so empty the cart
             dispatch(clearCart());
-          } catch (err) {
+          } catch {
             // error message is already saved in redux state, nothing else to do
           }
         },
@@ -86,7 +86,7 @@ const Payment = () => {
 
       const razorpayCheckout = new window.Razorpay(options);
       razorpayCheckout.open();
-    } catch (err) {
+    } catch {
       // error message is already saved in redux state, nothing else to do
     }
   };

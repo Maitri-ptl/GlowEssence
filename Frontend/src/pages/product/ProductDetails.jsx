@@ -44,12 +44,20 @@ const ProductDetails = () => {
   const [reviewComment, setReviewComment] = useState("");
   const [reviewPage, setReviewPage] = useState(1);
 
+  // reset the review pagination back to page 1 whenever we navigate to a
+  // different product. Adjusting state during render (rather than in the
+  // effect below) avoids an extra, unnecessary re-render.
+  const [prevId, setPrevId] = useState(id);
+  if (id !== prevId) {
+    setPrevId(id);
+    setReviewPage(1);
+  }
+
   // load this product (and its reviews) whenever the page opens, using
   // the real database id from the URL
   useEffect(() => {
     dispatch(fetchProductById(id));
     dispatch(fetchReviews(id));
-    setReviewPage(1);
   }, [dispatch, id]);
 
   if (isLoading) {

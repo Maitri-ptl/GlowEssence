@@ -1,5 +1,6 @@
 import express from "express";
 import "dotenv/config";
+import cors from "cors";
 import db from "./configs/db.js";
 import bodyParser from "body-parser";
 import router from "./routes/index.js";

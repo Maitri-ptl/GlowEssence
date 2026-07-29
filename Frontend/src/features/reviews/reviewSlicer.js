@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { API_URL } from "../../config/api.js";
 
-const BASE_URL = "/api/review";
+const BASE_URL = `${API_URL}/api/review`;
 
 const authHeaders = (token) => ({
     "Content-Type": "application/json",

@@ -121,7 +121,9 @@ export const verifyEmail = async (req, res) => {
         if (!user) {
 
             // send them back into the actual app (not raw JSON) with a status flag
-            return res.redirect("http://localhost:5173/login?verified=failed");
+            return res.redirect(
+                `${process.env.FRONTEND_URL}/login?verified=failed`
+            );
 
         }
 
@@ -136,7 +138,9 @@ export const verifyEmail = async (req, res) => {
         await user.save();
 
         // verified! send them back into the app so they can log in
-        return res.redirect("http://localhost:5173/login?verified=success");
+        return res.redirect(
+            `${process.env.FRONTEND_URL}/login?verified=success`
+        );
 
     }
 
@@ -203,7 +207,7 @@ export const forgotPassword = async (req, res) => {
         await user.save();
 
         // Frontend URL baad me change kar dena
-        const resetURL = `http://localhost:5173/reset-password/${resetToken}`;
+        const resetURL = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
         await transporter.sendMail({
 

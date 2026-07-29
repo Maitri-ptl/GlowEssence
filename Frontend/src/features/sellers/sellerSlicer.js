@@ -1,10 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-
-const BASE_URL =
-    import.meta.env.MODE === "development"
-        ? "/api/seller"
-        : "https://glowessence-backend-rbwl.onrender.com/api/seller";
+const BASE_URL = "/api/seller";
 
 // Register a new seller (business account)
 export const registerSeller = createAsyncThunk(

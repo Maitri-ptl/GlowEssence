@@ -4,17 +4,10 @@ import db from "./configs/db.js";
 import bodyParser from "body-parser";
 import router from "./routes/index.js";
 import razorpay from "./configs/razorpay.js";
-import cors from "cors";
 
 const port = process.env.PORT || 3000;
 
 const app = express();
-
-app.use(cors({
-    origin: "https://glow-essence-3thc.vercel.app/",
-    credentials: true,
-}));
-
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {

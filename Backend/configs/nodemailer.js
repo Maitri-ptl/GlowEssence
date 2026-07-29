@@ -1,15 +1,11 @@
-import nodemailer from "nodemailer";
+import Razorpay from "razorpay";
 
-// Create Transporter
-// Ye transporter Gmail SMTP ke through email bhejega.
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        // .env se Gmail Email
-        user: process.env.EMAIL_USER,
-        // .env se App Password
-        pass: process.env.EMAIL_PASS
-    }
+// Create Razorpay Instance
+// Is instance ka use hum order create aur refund ke liye karenge
+
+const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
-export default transporter;
+export default razorpay;

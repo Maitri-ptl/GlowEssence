@@ -1,10 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-
-const BASE_URL =
-    import.meta.env.MODE === "development"
-        ? "/api/product"
-        : "https://glowessence-backend-rbwl.onrender.com/api/product";
+const BASE_URL = "/api/product";
 
 const authHeaders = (token) => ({
     "Content-Type": "application/json",

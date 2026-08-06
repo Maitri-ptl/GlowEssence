@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(cors({
-    origin: "https://glow-essence-tau.vercel.app",
+    origin: "https://glow-essence-3thc.vercel.app/",
     credentials: true,
 }));
 

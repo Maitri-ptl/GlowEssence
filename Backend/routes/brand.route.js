@@ -12,7 +12,7 @@ const brandRouter = Router()
 // add brand (admin or seller)
 // brand/add-brand
 brandRouter.post('/add-brand', verifyAdminOrSeller, createBrand)
-
+ 
 // get all brands
 // brand/get-all-brands
 brandRouter.get('/get-all-brands',getAllBrands)
